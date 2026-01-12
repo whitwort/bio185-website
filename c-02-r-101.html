@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>R 101</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://rstudioconnect.wlu.edu/bio185/">bio185</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <!-- placeholder for navbar content; will be populated on page load on built website -->
+      <script type = "text/javascript">
+        $(function() {
+          $("#navbar").load("includes.html #navbar");
+        });
+      </script>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R 101</h1>
+
+</div>
+
+
+<p>View as a <a href="c-02-r-101-slides.html">slideshow</a>.</p>
+<div id="the-basics" class="section level1">
+<h1>The basics</h1>
+<div id="interacting-with-r" class="section level2">
+<h2>Interacting with R</h2>
+<p>The command line is the primary mechanism that you’ll use to interact with R. When you enter instructions the R interpreter will perform computations for you.</p>
+<p>While this may seem like an arcane method for interacting with software, it has one <em>huge</em> advantage over point-and-click environments: it is incredibly easy to repeat or abstract computations that you need to do often or on very large data sets. Any instruction that you type at the R command line can also be saved to a “R script” file or an “R Markdown” document. These files are just plain text files (by convention, R scripts have a “.r” or “.R” at the end of the file name and markdown files end in “.rmd”). Running an R script or documents is identical to hand typing all of the commands in that script at the command line.</p>
+<p>Let’s try entering some simple math expressions to see how this interaction with the command line works. In the code examples you see on this site the commands you type are followed by the text or visual output that R produces.</p>
+<p>What will happen when you enter these commands? Try it out.</p>
+<pre class="r"><code>1 + 2
+2 * 3
+4 ^ 5
+6.7 / 8.9</code></pre>
+<p>No surprises; R can be used as a calculator. R recognizes the standard syntax for numbers and mathematical operators. When you’ve enter a complete <a href="https://en.wikipedia.org/wiki/Expression_(computer_science)">expression</a> at the command line and hit “enter”, R <a href="http://en.wikipedia.org/wiki/Evaluation_strategy">evaluates</a> the result of that expression. If you don’t tell R what to do with the result, it will just print out a representation of the value on the next line.</p>
+</div>
+<div id="saving-data-in-variables" class="section level2">
+<h2>Saving data in variables</h2>
+<p>Usually you will want to perform a calculation and save the result for later use. If you’ve used Excel, you’ve probably used cells on a worksheet to hold the results of calculations based on the data in other cells. In R we can save the results of computations in <a href="https://en.wikipedia.org/wiki/Variable_(computer_science)">variables</a>. To do this we’ll use the assignment operator, which is a little arrow <code>&lt;-</code>.</p>
+<p>If you’re coming from another programming language and the arrow syntax bugs you, you <em>can</em> use <code>=</code> operator for general assignment – see the R help pages for a few important edge cases.</p>
+<pre class="r"><code>a &lt;- 10
+a</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>b &lt;- a + 11
+b</code></pre>
+<pre><code>## [1] 21</code></pre>
+<pre class="r"><code>c &lt;- a / b
+c</code></pre>
+<pre><code>## [1] 0.4761905</code></pre>
+<p>If you’re working with very large numbers you can use scientific notation:</p>
+<pre class="r"><code>2e10</code></pre>
+<pre><code>## [1] 2e+10</code></pre>
+<pre class="r"><code>2 * 10^10</code></pre>
+<pre><code>## [1] 2e+10</code></pre>
+<pre class="r"><code>2e10 == 2 * 10^10</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>In that last line we used the comparison operator <code>==</code>; it tests whether or not two values are equivalent.</p>
+<p>Finally, let’s see what happens if we try hitting <code>enter</code> before we’ve finished entering a complete expression. Type <code>2 +</code> and then hit <code>enter</code>. You’ll see a little <code>+</code> shows up as your prompt on the next line. This is R’s way of telling you the text you’ve entered so far isn’t a complete thought. Finish this expression by entering another number and hitting <code>enter</code> again.</p>
+</div>
+<div id="everything-is-a-vector" class="section level2">
+<h2>Everything is a vector</h2>
+<p>In the above expressions we appeared to be doing computations on single numbers. In fact, something more complicated was going on under the hood. In R all data are actually <a href="http://en.wikipedia.org/wiki/Array_data_structure">vectors</a> of values.</p>
+<p>Unlike other programming languages, there are no scalar values in R; the most basic data structure is a vector. Single values are just vectors with one element. This may seem odd at first, until you consider the key implication: all operators and functions in R are built to handle vectors of data, not just single values. This means anything that can be done with a single number can also be done with a vector of numbers. This is a language that was clearly designed by statisticians! You can see how many elements a vector holds using the <code>length</code> function:</p>
+<pre class="r"><code>length(10)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>length(c)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>length(1:10)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<p>Above <code>length</code> is the first example we’ve seen of an R <a href="https://en.wikipedia.org/wiki/Closure_(computer_programming)">function</a>. In programming, functions are analogous to their mathematical counter parts: they take in one or more values and evaluate to a new value. The R syntax for running, or “calling”, a function is in the form of <code>functionName(value1, value2, ...)</code>. We’ll explore functions in more depth throughout the course</p>
+</div>
+<div id="composing-vectors" class="section level2">
+<h2>Composing vectors</h2>
+<p>The <code>length</code> function has reported that we’ve been working with vectors of 1 element so far. To <strong>c</strong>ompose a vector with more than one element, we’ll use the <code>c()</code> function:</p>
+<pre class="r"><code>c(1, 2, 3, 4)</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<pre class="r"><code>d &lt;- c(5, 6, 7, 8)
+d + 10</code></pre>
+<pre><code>## [1] 15 16 17 18</code></pre>
+<pre class="r"><code>d + d</code></pre>
+<pre><code>## [1] 10 12 14 16</code></pre>
+<p>As you can see, mathematical operators in R are built to handle vectorized operations: we could add a 4 element vector <code>d</code> to a one element vector <code>10</code> and get a sensible result.</p>
+<p><strong>Side note for programmers</strong>: if you’re coming to R with a background in other programming languages, you might have caught something in the last code block that freaked you out. We had previously assigned the variable <code>c</code> to hold a number; yet we were still able to call the built-in <code>c</code> function from this scope. In almost any other common scripting language this would not have worked. Although base scoping rules in R are strictly lexical, there are a number of aggressive additional checks that are performed on look-up failures. For example, when an attempt is made to apply a non-function in an inner scope, the interpreter will ascend the scope chain looking for up-values that <em>are</em> functions. This is why we were able to bind <code>c</code> to a vector of numbers in our current scope and still use the base R <code>c()</code> function. Another example of this design philosophy at play in R is aggressive partial matching for named arguments in function calls. Core R is designed with fallbacks galore to give it a good shot at being able to execute whatever mess you hand it.</p>
+</div>
+<div id="value-recycling" class="section level2">
+<h2>Value recycling</h2>
+<p>So how is it that that worked? We could add a 4-element vector to a 1-element vector, or add a 4-element vector to a 4-element vector. The answer is recycling. Consider:</p>
+<pre class="r"><code>d + c(1, 2)</code></pre>
+<pre><code>## [1]  6  8  8 10</code></pre>
+<pre class="r"><code>d + c(1, 2, 3)</code></pre>
+<pre><code>## Warning in d + c(1, 2, 3): longer object length is not a multiple of
+## shorter object length</code></pre>
+<pre><code>## [1]  6  8 10  9</code></pre>
+<p>When one vector in an operation is shorter than the other it’s values are recycled, in order, as many times as needed to match the other vector’s length.</p>
+<p>So, for example, we could flip the sign of every other number in a vector with:</p>
+<pre class="r"><code>d * c(1, -1)</code></pre>
+<pre><code>## [1]  5 -6  7 -8</code></pre>
+</div>
+</div>
+<div id="types-of-variables" class="section level1">
+<h1>Types of variables</h1>
+<p>So far we’ve only seen numbers for values in vectors (numeric types), but there are other basic data types that R supports of course.</p>
+<div id="strings" class="section level2">
+<h2>Strings</h2>
+<p>We can store text in character vectors (synonymous with strings in other languages). To create character vectors, surround your text with either double <code>&quot; ... &quot;</code> or single <code>' ... '</code> quotes:</p>
+<pre class="r"><code>&quot;a&quot;</code></pre>
+<pre><code>## [1] &quot;a&quot;</code></pre>
+<pre class="r"><code>&quot;a&quot; == &#39;a&#39;</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>c( &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot; )</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot;</code></pre>
+<p>Strings have a number of special codes that denote things like text formatting, all of which start with a backslash <code>\</code>. Two common special string characters that you are likely to encounter are tab <code>\t</code> and newline <code>\n</code>:</p>
+<pre class="r"><code>s &lt;- &quot;a\tb\tc&quot;
+cat(s)</code></pre>
+<pre><code>## a    b   c</code></pre>
+<pre class="r"><code>s &lt;- &quot;a\nb\nc&quot;
+cat(s)</code></pre>
+<pre><code>## a
+## b
+## c</code></pre>
+</div>
+<div id="boolean-values" class="section level2">
+<h2>Boolean values</h2>
+<p>Boolean can either be “True” or “False”, and represent a variable with binary values. To create Boolean use <code>TRUE</code> or <code>FALSE</code>:</p>
+<pre class="r"><code>TRUE</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>FALSE</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>c(TRUE, TRUE, FALSE)</code></pre>
+<pre><code>## [1]  TRUE  TRUE FALSE</code></pre>
+<pre class="r"><code>TRUE == FALSE</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+<div id="missing-data" class="section level2">
+<h2>Missing Data</h2>
+<p>R has built-in support for flagging values as missing data. The special <code>NA</code> value can be mixed with any other kind of data in a vector. For example:</p>
+<pre class="r"><code>c(1, 2, NA, 4)</code></pre>
+<pre><code>## [1]  1  2 NA  4</code></pre>
+<pre class="r"><code>c( &quot;a&quot;, NA, &quot;c&quot;, NA )</code></pre>
+<pre><code>## [1] &quot;a&quot; NA  &quot;c&quot; NA</code></pre>
+<pre class="r"><code>c(TRUE, FALSE, NA, FALSE)</code></pre>
+<pre><code>## [1]  TRUE FALSE    NA FALSE</code></pre>
+<pre class="r"><code>is.na( c(1, NA) )</code></pre>
+<pre><code>## [1] FALSE  TRUE</code></pre>
+<p>Most R functions will either understand how to deal with missing data, or issue an error if they involve a type of statistical analysis that can’t be used with missing data.</p>
+</div>
+<div id="a-note-about-null" class="section level2">
+<h2>A note about NULL</h2>
+<p>R also has a special “no-value” type called <code>NULL</code>. If you are coming to R from another programming language it is easy confuse <code>NA</code> and <code>NULL</code> (for example, in Python data analysis modules the <code>None</code> type is often used to do double duty, signifying <code>NULL</code> or <code>NA</code> depending on the context). By convention, you should use <code>NA</code> in data structures to represent missing data points.</p>
+<p><code>NULL</code> is used to signify unassigned variables:</p>
+<pre class="r"><code>NULL</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>is.null(NULL)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+</div>
+<div id="indexing-syntax-in-r" class="section level1">
+<h1>Indexing syntax in R</h1>
+<div id="extracting-values" class="section level2">
+<h2>Extracting values</h2>
+<p>Let’s say we have a vector of numbers:</p>
+<pre class="r"><code>myNumbers &lt;- c( 10, 20, 30, 40, 50 )</code></pre>
+<p>We can extract elements from 1D vectors using the index syntax <code>[]</code> and integers:</p>
+<pre class="r"><code>myNumbers</code></pre>
+<pre><code>## [1] 10 20 30 40 50</code></pre>
+<pre class="r"><code>myNumbers[1]</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>myNumbers[3]</code></pre>
+<pre><code>## [1] 30</code></pre>
+<p>Here, we’ve extracted elements at the position given by the integer we put inside of the <code>[...]</code>. Remember that the numbers <code>1</code> and <code>3</code> in the code above are actually <em>vectors</em> of integers.</p>
+<p>We can use integer vectors with more than one element inside of our index <code>[...]</code>’s::</p>
+<pre class="r"><code>myNumbers[ c(1, 3) ]</code></pre>
+<pre><code>## [1] 10 30</code></pre>
+<p>You can use the <code>:</code> operator to easily create a sequence of numbers:</p>
+<pre class="r"><code>2:4</code></pre>
+<pre><code>## [1] 2 3 4</code></pre>
+<pre class="r"><code>myNumbers[2:4]</code></pre>
+<pre><code>## [1] 20 30 40</code></pre>
+<p>In addition to putting integer vectors inside of the index <code>[...]</code> we can also use logical vectors. If we do, <code>TRUE</code> at a position it causes a value to be extracted, while a <code>FALSE</code> indicates that it should be skipped. Let’s look at an example:</p>
+<pre class="r"><code>myNumbers</code></pre>
+<pre><code>## [1] 10 20 30 40 50</code></pre>
+<pre class="r"><code>myNumbers[ c(FALSE, TRUE,  TRUE,  TRUE,  TRUE ) ]</code></pre>
+<pre><code>## [1] 20 30 40 50</code></pre>
+<pre class="r"><code>myNumbers[ c(TRUE,  FALSE, FALSE, FALSE, FALSE) ]</code></pre>
+<pre><code>## [1] 10</code></pre>
+<p>So why would you ever want to do this? The answer lies in the combination of indexing and the logical operators (<code>&gt;</code>, <code>&lt;</code>, <code>==</code>, <code>!=</code>, and <code>%in%</code>).</p>
+<p>Logical operators always return a logical vector:</p>
+<pre class="r"><code>myNumbers &gt; 25</code></pre>
+<pre><code>## [1] FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
+<pre class="r"><code>myNumbers &lt; 25</code></pre>
+<pre><code>## [1]  TRUE  TRUE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>myNumbers == 30</code></pre>
+<pre><code>## [1] FALSE FALSE  TRUE FALSE FALSE</code></pre>
+<pre class="r"><code>myNumbers != 30</code></pre>
+<pre><code>## [1]  TRUE  TRUE FALSE  TRUE  TRUE</code></pre>
+<p>The <code>%in%</code> operator asks if the first set of numbers can be found in the second:</p>
+<pre class="r"><code>30 %in% myNumbers</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>c(10, 100) %in% myNumbers</code></pre>
+<pre><code>## [1]  TRUE FALSE</code></pre>
+<p>The <code>!</code> operator negates (flips) each value of a logical vector:</p>
+<pre class="r"><code>!TRUE</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>!(myNumbers &gt; 25)</code></pre>
+<pre><code>## [1]  TRUE  TRUE FALSE FALSE FALSE</code></pre>
+<p><strong>A note about <code>=</code> vs <code>==</code>:</strong> Many beginners are confused by the difference between <code>=</code> and <code>==</code>. The <code>=</code> operator is used for value assignment, traditionally for arguments inside of function calls such as <code>plot(x = 10, y = 1)</code>, or in newer versions of R in place of the <code>&lt;-</code> operator as in <code>a = 10</code>. If you want to compare <em>equivalence</em> between two values you’ll want to use the double <code>==</code> operator. These operations will evaluate to a logical vector (<code>TRUE</code> or <code>FALSE</code>).</p>
+<p>So how can we combine logical comparisons with indexing?</p>
+<pre class="r"><code>myNumbers[myNumbers &gt; 25]</code></pre>
+<pre><code>## [1] 30 40 50</code></pre>
+<pre class="r"><code>myNumbers[myNumbers &lt; 25]</code></pre>
+<pre><code>## [1] 10 20</code></pre>
+<p>You can get fancy…</p>
+<pre class="r"><code>myNumbers[ (myNumbers %% 2) == 0 ]</code></pre>
+<pre><code>## [1] 10 20 30 40 50</code></pre>
+<p>What happened there? If you need help figuring it out, look up the <code>%%</code> (<em>modulo</em>) operator on the help panel.</p>
+</div>
+<div id="assigning-values" class="section level2">
+<h2>Assigning values</h2>
+<p>Finally, the indexing <code>[...]</code> syntax isn’t just used to extract values from data structures. It can also be used to assign values <em>into</em> existing structures. For example:</p>
+<pre class="r"><code>myNumbers</code></pre>
+<pre><code>## [1] 10 20 30 40 50</code></pre>
+<pre class="r"><code>myNumbers[3]    &lt;- 100
+myNumbers</code></pre>
+<pre><code>## [1]  10  20 100  40  50</code></pre>
+<pre class="r"><code>myNumbers[2:3]  &lt;- c(1, 2)
+myNumbers</code></pre>
+<pre><code>## [1] 10  1  2 40 50</code></pre>
+</div>
+</div>
+<div id="failure-is-an-option" class="section level1">
+<h1>Failure is an option!</h1>
+<div id="it-doesnt-work-and-its-rs-fault" class="section level2">
+<h2>It doesn’t work and it’s R’s fault!</h2>
+<p>We’ve all been there: you’re sure your code is perfect and yet the machine isn’t doing what it “should.” Of course, this always means the problem is that your code is broken – you’ve made a false assumption, you’ve skipped a step that you thought you included, etc. – but in general, people <a href="https://en.wikipedia.org/wiki/Confirmation_bias">don’t like to be wrong</a>, and chances are good that you’re a person.</p>
+<p>So how can you shift your thinking to get moving again when you’re stuck and frustrated?</p>
+</div>
+<div id="play-play-and-play-some-more" class="section level2">
+<h2>Play, play and play some more!</h2>
+<p>When we communicate with other people, most of us try to avoid making statements that have obvious errors or that are going to elicit a negative response. For many folks, when you first start programming it’s natural to instinctively avoid entering expressions that seem to have a high likelihood of failure.</p>
+<p>But, of course, the R interpreter isn’t actually going to judge you! In fact, it’s (close to) impossible for you to do anything that’s going to break* R or the server. If you find an edge case that I haven’t protected you from yet, it only takes about 30s for us to reboot.</p>
+<p>So this is all to say that you SHOULD try to run expressions that will fail! If a function isn’t doing what you expect it do in your code then PLAY with it! Throw crazy data at it and see what happens! Errors are awesome; you learn more from them than code that silently does weird stuff.</p>
+<ul>
+<li>Footnote: about the most destructive thing you can do is erase all of your files. Please don’t do that.</li>
+</ul>
+</div>
+<div id="try-to-invalidate-your-assumptions" class="section level2">
+<h2>Try to invalidate your assumptions</h2>
+<p>Instinctively, most people will lean towards asking questions that validate, instead of invalidate, their assumptions. In science, we have to operate differently: in most fields you spend most of your time running negative controls. Think about coding the same way.</p>
+</div>
+<div id="read-the-manual" class="section level2">
+<h2>Read the manual</h2>
+<p>All functions in base R and R packages are required to be documented. You can see the help page for an R function by using the search box in R studio or the <code>?</code>:</p>
+<pre class="r"><code>?mean</code></pre>
+<p>At first you will probably find these help pages to be a little inscrutable, but they are all written in a well defined format so with time they will start to be easier to read.</p>
+</div>
+</div>
+
+<div id="footer-content">
+  <!-- placeholder for footer content; will be populated on page load on built website -->
+  <script type = "text/javascript">
+    $(document).ready(function () {
+      hljs.initHighlighting();
+    });
+    $(function() {
+      $("#footer-content").load("includes.html #footer-content");
+    });
+  </script>
+</div> 
+
+
+<style>
+  /* fix for scrollbar fix; it overly compresses space between headers and 
+     preceeding paragraphs 
+  */
+  .section h1 {
+    padding-top: 66px;
+    margin-top: -36px;
+  }
+  
+  .section h2 {
+    padding-top: 66px;
+    margin-top: -26px;
+  }
+  .section h3 {
+    padding-top: 66px;
+    margin-top: -16px;
+  }
+  .section h4 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h5 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h6 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+</style>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

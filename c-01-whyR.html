@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Why R?</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://rstudioconnect.wlu.edu/bio185/">bio185</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <!-- placeholder for navbar content; will be populated on page load on built website -->
+      <script type = "text/javascript">
+        $(function() {
+          $("#navbar").load("includes.html #navbar");
+        });
+      </script>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Why R?</h1>
+
+</div>
+
+
+<p>View as a <a href="c-01-whyR-slides.html">slideshow</a>.</p>
+<p><img src="c-01-whyR_files/figure-html/unnamed-chunk-1-1.svg" width="672" /></p>
+<p><a href="http://www.r-project.org/" title="R Project homepage">R</a> is a free software tool designed to facilitate interactive data analysis and visualization. It has recently become <a href="http://r4stats.com/articles/popularity/">the most popular platform</a> for data analysis in the biosciences and data science community, replacing commercial software packages like SPSS and SASS. Its name is a bit of a pun on its history: R is a derivative of the commercial <a href="http://en.wikipedia.org/wiki/S-PLUS">S-Plus</a>. It was originally developed by <a href="http://en.wikipedia.org/wiki/Ross_Ihaka">Ross Ihaka</a> and <a href="http://en.wikipedia.org/wiki/Robert_Gentleman">Robert Gentlemen</a>.</p>
+<p><a href="http://www.r-project.org/" title="R Project homepage">R</a> is really two related things: a powerful programming language designed for interactive data analysis and a huge community of researcher/programmers who have implemented analysis and visualization algorithms in R. To explore general statistical packages available for R see <a href="http://cran.r-project.org/web/views/">CRAN</a>; for bioinformatics and computational biology packages see <a href="http://www.bioconductor.org/">BioConductor</a>.</p>
+<p><br></p>
+<div id="why-use-r" class="section level1">
+<h1>Why use R?</h1>
+<ul>
+<li><p>It’s “Free like Pizza”</p>
+<p><a href="http://www.r-project.org/" title="R Project homepage">R</a> is <a href="http://www.r-project.org/Licenses/GPL-2">free software</a>, in that it is free for anyone to install and use. At W&amp;L we are fortunate enough to have the resources to pay expensive software licensing fees for commercial data analysis software like SPSS and Matlab, but this may not be the case for our collaborators or other researchers who would like to reproduce our work. There’s a compelling argument to be made that using paid-software in basic research runs counter to our obligation to make our published data publicly available and our work easily reproducible.</p></li>
+<li><p>It’s “Free like Ideas”</p>
+<p>The design of R and of R packages makes it nearly impossible to <a href="http://en.wikipedia.org/wiki/Obfuscation">hide or obfuscate</a> source code. As a language, R was designed from the ground up to be an open source software ecosystem. As a result, the sources for all of base R and all packages on CRAN and BioConductor are open to scrutiny by programmers, statisticians and researchers. Even good programmers on major software projects make mistakes, like the <a href="http://www.joelonsoftware.com/items/2007/09/26b.html">folks who make Excel</a>. In the <a href="http://en.wikipedia.org/wiki/Proprietary_software">closed source</a> world, bugs are only caught when users pin down odd behaviors in programs. When software is <a href="http://en.wikipedia.org/wiki/Open_source">open source</a>, many eyes can directly examine the implementation of new algorithms, dramatically decreasing the likelihood that errors will make it into released software (thereby decreasing the likelihood that you will publish erroneous results). The huge advantages that come with crowd sourcing software validation is probably why open source software <a href="http://en.wikipedia.org/wiki/Linux_adoption">runs the internet</a>.</p></li>
+</ul>
+<p>Finally, graphics and interactivity are baked in. There are other open source high-level scripting languages that are quite popular in research science, like <a href="http://www.python.org/">Python</a> and <a href="http://www.perl.org/">Perl</a>. These programming languages offer features which are very similar to R. However, the recent rise in popularity of R among the bioscience and data science communities has likely been driven by a few simple usability features that are unique to the R environment. In particular, the language has been designed from the ground up to make it easy to <em>interactively</em> explore large data sets and easily produce publication-quality visualizations.</p>
+<pre class="r"><code># Plot miles per gallon (mpg) as a function of car weight (wt)
+plot(mpg ~ wt, data = mtcars)</code></pre>
+<p><img src="c-01-whyR_files/figure-html/unnamed-chunk-2-1.svg" width="672" /></p>
+<p>If you’re interested in a deep analysis of the design of the R language, including formal semantics, <a href="http://r.cs.purdue.edu/pub/ecoop12.pdf">this recent paper</a> offers some interesting insights.</p>
+<p><br></p>
+</div>
+<div id="leading-edge" class="section level1">
+<h1>Leading edge</h1>
+<p>Because the R language was designed with statistics in mind, it offers many language features that make it easy to implement new data analysis algorithms. Because of this, R has become the <em>de facto</em> platform for methodological research in statistics and data science. It is almost always the first choice for implementing and experimenting with new analysis methods. This means it is quite likely that a package is available for R which offers the latest and greatest approach for your research field.</p>
+<div class="figure">
+<img src="img/marketshare.png" alt="r-google-scholar" />
+<p class="caption">r-google-scholar</p>
+</div>
+<p>From <a href="http://librestats.com/2012/04/12/statistical-software-popularity-on-google-scholar/">librestats.com</a></p>
+<p>Although it’s quite hard to nail down how frequently and in what ways different kinds of programming languages and platforms are being used in the wild, most trends indicate that R is a (if not the) dominant environment for doing data analysis in both bioinformatics and the data sciences. This trend is reflected in both qualitative surveys of researchers and professionals and in quantitative analyses of code used in papers and national competitions. For example, R stacks up well in a 2013 survey:</p>
+<div class="figure">
+<img src="img/r-in-analysis.JPG" alt="r-in-analysis" />
+<p class="caption">r-in-analysis</p>
+</div>
+<p>From <a href="http://bioinfsurvey.org/analysis/programming_languages">Bioinformatics survey</a>.</p>
+<p>There are also a healthy number of jobs out there in both bioinformatics and the broader world of data science for folks with strong coding skills in general and familiarity with R in particular:</p>
+<div class="figure">
+<img src="img/fig_1b_rvspss_2014-2-22.png" alt="r-jobs" />
+<p class="caption">r-jobs</p>
+</div>
+<p>From <a href="http://r4stats.com/articles/popularity/">r4stats.com</a>.</p>
+<p>Although the popularity of a platform doesn’t necessarily equate with it’s quality or suitability to a particular task (for example, Excel), the strong community behind R provides a number of advantages to new and advanced users alike. First, it means that it is relatively easy to get help solving problems in R: Google will nearly always turn up a useful blog post or thread. Second, it means there is a HUGE library of community developed packages that extend the tools in base R in expansive ways. For example, the expansion of the R tool set, as seen through the number of available add-on packages:</p>
+<div class="figure">
+<img src="img/r-packages.JPG" alt="r-packages-by-time" />
+<p class="caption">r-packages-by-time</p>
+</div>
+<p>From <a href="http://r4stats.com/articles/popularity/">r4stats.com</a>.</p>
+<p><br></p>
+</div>
+<div id="why-not-r" class="section level1">
+<h1>Why not R?</h1>
+<blockquote>
+<p>“The best thing about R is that it was written by statisticians. The worst thing about R…” - Bo Cowgill, Google</p>
+</blockquote>
+<p>There’s no getting around the fact that the learning curve for R is very steep, especially if you’ve never programmed before or worked at a command line. The core R software offers no user interface in the traditional desktop sense. There are no menus or buttons to click like there are Excel. Over the 20 year history of the R language there have been several efforts to create a front end interfaces for R. Interestingly, these efforts have never really caught on and have been actively discouraged by the original authors of the language. The argument against this approach is that putting a point-and-click interface on the front of R is like wrapping a jet engine with the body of a Yugo. The language developers argue that it is impossible to design an Excel or Minitab style interface that would let a user access the full power of the R language or the scope of its packages, and doing so runs the risk of discouraging users from really exploring the language.</p>
+<p>Nonetheless, when you are used to a work flow that’s menu and button driven, it is hard to know where to start with a tool like R. Our hope in this course is to try to help to ease the pain of adopting R through practical tutorials!</p>
+</div>
+
+<div id="footer-content">
+  <!-- placeholder for footer content; will be populated on page load on built website -->
+  <script type = "text/javascript">
+    $(document).ready(function () {
+      hljs.initHighlighting();
+    });
+    $(function() {
+      $("#footer-content").load("includes.html #footer-content");
+    });
+  </script>
+</div> 
+
+
+<style>
+  /* fix for scrollbar fix; it overly compresses space between headers and 
+     preceeding paragraphs 
+  */
+  .section h1 {
+    padding-top: 66px;
+    margin-top: -36px;
+  }
+  
+  .section h2 {
+    padding-top: 66px;
+    margin-top: -26px;
+  }
+  .section h3 {
+    padding-top: 66px;
+    margin-top: -16px;
+  }
+  .section h4 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h5 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h6 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+</style>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
