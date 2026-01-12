@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>bio185</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://rstudioconnect.wlu.edu/bio185/">bio185</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <!-- placeholder for navbar content; will be populated on page load on built website -->
+      <script type = "text/javascript">
+        $(function() {
+          $("#navbar").load("includes.html #navbar");
+        });
+      </script>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar --> 
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">bio185</h1>
+
+</div>
+
+
+<p>Welcome to the course website for <a href="https://en.wikipedia.org/wiki/Data_science">Biol-185: Data Science</a>. This is where you will find tutorial pages, readings, assignments, and the class schedule along with grading information.</p>
+<div id="schedule" class="section level1">
+<h1>Schedule</h1>
+<p>All readings for this course will be from <a href="http://r4ds.had.co.nz/index.html">R for Data Science</a> which is freely available on the web, but you might want to <a href="https://www.amazon.com/Data-Science-Transform-Visualize-Model/dp/1491910399">order a hard copy</a> if you’d like to support the author. Please read the listed sections <em>before</em> class; assignments are meant to be done <em>after</em> class unless otherwise noted. Links in the table below will populate as the term progresses.</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+        <th class="col-sm-1">Week</th>
+        <th class="col-sm-3">Topics</th>
+        <th class="col-sm-4">Readings</th>
+        <th class="col-sm-4">Assignments</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><p>0</p></td>
+          <td><p><a href="c-01-whyR.html">Why R?</a></p><p><a href="c-02-r-101.html">R 101</a></p></td>
+          <td><p><strong>Friday</strong></p><p><a href="http://r4ds.had.co.nz/introduction.html">Introduction</a>.  You don&#39;t need to worry about installing anything; your RStudio accounts on <a href="https://rna.wlu.edu/r">RNA</a> are already setup.</p><p><a href="http://r4ds.had.co.nz/explore-intro.html">Explore: Introduction</a>.  A quick overview of a typical data analysis workflow.</p></td>
+          <td><p><strong>Monday</strong></p><p><strong>Wednesday</strong></p></td>
+      </tr>
+      <tr>
+          <td><p>1</p></td>
+          <td><p><a href="c-04-file-types.html">Scripts and RMarkdowns and Packages, Oh My!</a></p><p><a href="c-05-visualizing-data.html">Visualizing data</a></p><p><a href="c-06-data-transformation.html">Loading, Exploring and Transforming Data</a></p></td>
+          <td><p><strong>Monday</strong></p><p><a href="http://r4ds.had.co.nz/workflow-scripts.html">Workflow: scripts</a>.  Read all of this short piece about R script files.</p><p><a href="http://r4ds.had.co.nz/r-markdown.html">R Markdown</a>.  Look over sections 27.1 to 27.4, but only the introduction to 27.4 not all the details.  Feel free to look over the rest if you&#39;re curious.</p><p><strong>Wednesday</strong></p><p><a href="http://r4ds.had.co.nz/workflow-projects.html">Workflow: projects</a>. Read this entire section about R projects, environments, and file paths.  Students often strugle to keep these things straight, so look over this section carefully and come to class with questions about where you got lost. For the section about file paths, when you are working in R Studio on <a href="http://rna.wlu.edu/r">rna.wlu.edu</a> you&#39;re in a linux environment.</p><p><a href="http://r4ds.had.co.nz/transform.html">Data transformation</a>.  Read all of this section about how you can use <code>tidyverse</code> functions to filter, rearrange and calculate new values in tables of data.</p></td>
+          <td><p><strong>Monday</strong></p><p><strong>Wednesday</strong></p></td>
+      </tr>
+      <tr>
+          <td><p>2</p></td>
+          <td><p><a href="c-07-exploring-data.html">Exploratory data analysis</a></p><p><a href="c-08-style-matters.html">Style Matters</a></p><p><a href="c-09-tidy-data.html">Tidy(ing) data</a></p></td>
+          <td><p><strong>Monday</strong></p><p><a href="http://r4ds.had.co.nz/exploratory-data-analysis.html">Exploratory data analysis</a>.  Read over all of the topics in this excellent introduction to exploratory data analysis.</p><p><strong>Wednesday</strong></p><p><a href="https://r4ds.had.co.nz/tidy-data.html">Tidy Data</a>.  Read over this whole section carefully.  Your lives will be substantively improved by adhering to the principles of Tidy Data!</p></td>
+          <td><p><strong>Monday</strong></p><p><strong>Wednesday</strong></p></td>
+      </tr>
+      <tr>
+          <td><p>3</p></td>
+          <td><p><a href="c-10-joins.html">Data joins</a></p></td>
+          <td><p><strong>Monday</strong></p><p><a href="http://r4ds.had.co.nz/relational-data.html">Relational data</a>.  Read all of this section about how you can pull data from multiple sources.</p><p><a href="http://r4ds.had.co.nz/strings.html">Strings</a> and <a href="http://r4ds.had.co.nz/dates-and-times.html">Dates and times</a>.  These two sections are both a little long and a little dry; skim over them.  It&#39;s likely that they contain information that will help you solve problems with strings and dates/time that you will run into working on your projects, and it will be good to have an idea of where to seek help when you do.</p><p><strong>Wednesday</strong></p><p><a href="http://r4ds.had.co.nz/factors.html">Factors</a>.  Read this section carefully as <code>factors</code> are a very powerful feature in R, but also very confusing at first.</p></td>
+          <td><p><strong>Monday</strong></p><p><strong>Wednesday</strong></p></td>
+      </tr>
+      <tr>
+          <td><p>4</p></td>
+          <td><p><a href="c-11-github-projects.html">Git, GitHub and Projects</a></p><p><a href="c-12-functions-scope.html">Functions &amp; Lexical scope</a></p><p>Understanding vectors and lists</p></td>
+          <td><p><strong>Monday</strong></p><p><a href="http://r4ds.had.co.nz/functions.html">Functions</a>.  Learn to write your very own functions!  Doing it is easy.  Doing it well is very hard.  This chapter will give you a nice introduction.</p><p><strong>Wednesday</strong></p><p><a href="http://r4ds.had.co.nz/vectors.html">Vectors</a>.  Vectors: we&#39;ve been using them everywhere, without thinking too hard about what they are and how they work in R.  This chapter is a nice codex on everything vector.</p><p><a href="http://r4ds.had.co.nz/iteration.html">Iteration</a>.  We&#39;ve also been iterating over things without thinking too hard about how it worked under the hood.  This chapter introduces a number of very useful iteration design patterns. </p></td>
+          <td><p><strong>Monday</strong></p><p><strong>Wednesday</strong></p></td>
+      </tr>
+      <tr>
+          <td><p>5</p></td>
+          <td><p>Finding patterns: clustering</p><p>Finding patterns: machine learning</p></td>
+          <td></td>
+          <td><p><strong>Monday</strong></p><p><strong>Wednesday</strong></p><p>Reading Days</p></td>
+      </tr>
+      <tr>
+          <td><p>6</p></td>
+          <td><p><a href="c-13-leaflet.html">Leaflet &amp; maps</a></p><p>Geospatial visualization</p></td>
+          <td></td>
+          <td><p><strong>Monday</strong></p><p><strong>Wednesday</strong></p></td>
+      </tr>
+      <tr>
+          <td><p>7</p></td>
+          <td><p>Deep learning</p></td>
+          <td><p><strong>Monday</strong></p><p><a href="https://shiny.rstudio.com/gallery/">Shiny Gallery</a>.  Browse the Shiny app gallery to get an idea of what kinds of apps you&#39;ll be able to build using this R package.</p><p><a href="https://shiny.rstudio.com/tutorial/">Shiny Tutorial Video</a>.  I&#39;d recommend watching at least Part 1 either before or after class.  It is about 40 minutes long.</p></td>
+          <td><p><strong>Wednesday</strong></p><p><em>Project groups</em>.  <strong>Come to class ready to</strong> either give me the names of the people in your group and general project idea, or a list of possible projects ideas/types of data you&#39;re interested in. </p></td>
+      </tr>
+      <tr>
+          <td><p>8</p></td>
+          <td><p>Introducing Git and Github</p><p>[Project pitches]</p></td>
+          <td><p><strong>Monday</strong></p><p><a href="http://r-bio.github.io/intro-git-rstudio/">Introduction to Git and RStudio</a>.  This is one of the best introductions I&#39;ve found to Git, GitHub and using these tools in RStudio.  Read the first part carefully; you can skim the Pull Request section for now.</p></td>
+          <td><p><strong>Wednesday</strong></p><p><em>Project Pitches</em>.  In a <strong>5 minute project</strong> pitch, your group should introduce the data set(s) that you are working with and why you think the topic is an interesting candidate for your web app.  You should also show mock-ups of what you want your app to look like and what features you&#39;d like it to have; you can use pre-made slides or just draw on the whiteboard.</p></td>
+      </tr>
+      <tr>
+          <td><p>9</p></td>
+          <td><p>[Project workshop]</p></td>
+          <td></td>
+          <td><p><strong>Monday</strong></p><p><em>Deliverables Schedule</em>.  <strong>Before class</strong> Use your Github project site to create issues for each of the major tasks and features for your project and assign them to members of your group.  I&#39;ll meet with each group individually durring class to discuss your anticipated timeline for completing each.</p></td>
+      </tr>
+      <tr>
+          <td><p>10</p></td>
+          <td><p>[Project workshop]</p></td>
+          <td></td>
+          <td><p><strong>Wednesday</strong></p><p><em>Deliverables check-in</em>.  I&#39;ll meet with each group again in class again to get a report on how well work has progressed on your major tasks.  Your project should be at least in the <a href="https://en.wikipedia.org/wiki/Software_release_life_cycle">alpha phase</a>:  this means a working Shiny app that you can show me, albeit likely still missing some/many features.</p></td>
+      </tr>
+      <tr>
+          <td><p>11</p></td>
+          <td><p>[Project workshop]</p></td>
+          <td></td>
+          <td><p><strong>Wednesday</strong></p><p><em>Deliverables check-in</em>.  By this point your project should be in the <a href="https://en.wikipedia.org/wiki/Software_release_life_cycle">beta phase</a>:  this means a working app with most/all of the major features in place, but possibly with bugs and minor features still missing.</p></td>
+      </tr>
+      <tr>
+          <td><p>12</p></td>
+          <td><p>[Project workshop]</p><p>[Project Demonstrations &amp; Feedback]</p></td>
+          <td></td>
+          <td><p><strong>Wednesday</strong></p><p>5:30 - 7pm Biology &ldquo;Poster&rdquo; Session</p><p><strong>Wednesday</strong></p><p><em>Project Demonstrations</em>.  In class today, you&#39;ll walk the class through a demonstration of your Shiny app.  We&#39;ll provide feedback and polish suggestions; the final version of your app is due by the end of the day on Friday of finals week.</p></td>
+      </tr>
+  </tbody>
+</table>
+</div>
+<div id="course-description" class="section level1">
+<h1>Course Description</h1>
+<p>We live in the era of Big Data. Major discoveries in science and medicine are being made by exploring large data sets in novel ways using computational tools. The challenge in the biomedical sciences is the same as in Silicon Valley: knowing what computational tools are right for a project and where to get started when exploring large data sets. In this course you will learn to use R, a popular open-source programming language and data analysis environment, to interactively explore data. Case studies will be drawn from across the sciences and medicine. Topics will include data visualization, machine learning, image analysis, geospatial analysis, and statistical inference on large data sets. We will also emphasize best practices in coding, data handling and adherence to the principles of reproducible research. No prior programming experience is required.</p>
+</div>
+<div id="course-components" class="section level1">
+<h1>Course components</h1>
+<ul>
+<li>Course participation (20%)</li>
+<li>Coding assignments (25%)</li>
+<li>Shiny Project: Project pitch (5%)</li>
+<li>Shiny Project: Weekly deliverables check-ins (5% x 2)</li>
+<li>Shiny Project: Project demonstration (15%)</li>
+<li>Shiny Project: Final submission (25%)</li>
+</ul>
+<p><strong>Course Participation</strong>: This portion of your grade will reflect (1) how actively you participate in the classroom and (2) the thoughtfulness and insightfulness of your contributions. If you have any questions about your participation in the course, I’d be happy to give you feedback at any point in the term.</p>
+<p><strong>Coding and data analysis assignments</strong>. Many of the exercises and case studies we explore in class will be followed by a coding or data analysis assignment for you to work on outside of class. These assignments will be graded on a binary basis: either your solution meets all of the requirements (full credit) or it doesn’t. You should <em>try</em> to complete these assignments after class on the day they are listed on the schedule above. It’s OK if you get stuck, just be prepared to ask questions when we meet next. Completed assignments are formally due on the last day of the term (Friday of finals week).</p>
+<p><strong>Shiny Project</strong>. Your final project in this course will be to design and implement a web application that gives the user an opportunity to explore a data set of your choosing in a novel way. We’ll spend lots of time in-class exploring the tools you’ll need to accomplish this task. These projects will be completed in groups of 2-3 people. We will use <a href="https://github.com/">cool tools</a>, task management, and in-class “check-ins” to track each group members’ contributions to the project. Grades related to these projects will be assigned <em>individually</em>. When grading project-related components of the course, I will use the following rubric: pieces of work can be evaluated on the basis of either their ambition or their level of perfection. A-level work distinguishes itself by being both ambitious (creative; insightful; pushes beyond the minimum requirements) and exhibiting perfection (fulfills the ambitions with precision and polish). B-level work achieves one of these goals (exhibits ambition or perfection), but not quite both. C-level work fulfills the minimum requirements of the assignment. At any point in the process please feel free to ask me where I see your project falling on these two spectrums.</p>
+<div class="figure">
+<img src="img/gradingModel.png" title="Grading model" alt="" />
+<p class="caption">Fig. 1 Grading schema</p>
+</div>
+</div>
+<div id="learning-objectives" class="section level1">
+<h1>Learning Objectives</h1>
+<ul>
+<li><p>Effective scientific communication. In this course you will have many opportunities to practice effective scientific communication in both formal and informal settings, including: informal classroom discussions, a written project proposal, and through the code that you write describing statistical/computational approaches to data analysis problems.</p></li>
+<li><p>Use and understanding of the scientific method. Your final data analysis project will challenge you to develop a clearly defined scientific question and to think deeply and creatively about computational approaches to answering that question.</p></li>
+<li><p>Using the “tools and techniques” of science. This course is heavily focused on the computational and statistical tools commonly used to analyze large scale data sets in the sciences.</p></li>
+<li><p>Scientific literacy. You will have ample opportunity in this course to increase your exposure to cutting-edge investigations and to practice critical analysis of experimental approaches and the interpretation of data.</p></li>
+</ul>
+</div>
+<div id="accessibility-classroom-climate" class="section level1">
+<h1>Accessibility &amp; Classroom Climate</h1>
+<p>Our goal is to make this course as accessible and inclusive to as diverse a range of participants as possible. If at any point during the term you have questions or comments concerning accessibility in our classroom, please feel free to discuss them with me. I am eager to consider ways to make the classroom more inviting and to ensure your full participation in the course.</p>
+<p>I am committed to ensuring access to course content for all students. Reasonable accommodations are available for students with disabilities. Contact Lauren Kozak, Title IX Coordinator and Director of Disability Resources, to confidentially discuss your individual needs and the accommodation process. More information can be found at <a href="">https://www.wlu.edu/disability-accommodations/undergraduate-accommodations</a>.</p>
+<p>If you have already been approved for accommodations, please meet with me within the first two weeks of the term so we can develop an implementation plan together. It is important to meet as early in the term as possible; this will ensure that your accommodations are implemented early on. If you have accommodations for test-taking, please remember that arrangements must be made at least a week before the date of the test or exam.</p>
+</div>
+<div id="attendance" class="section level1">
+<h1>Attendance</h1>
+<p>If you miss class due to an event that you have previously discussed with me and that I have agreed constitutes a verified absence (examples include travel to interviews, academic conferences, or athletic competitions), you will not be penalized in the participation portion of your grade or for missed in-class work or projects. Because of the dynamic nature of this course, however, it will usually not be possible for you to make up missed classroom exercises or group work, so your final grade will simply be calculated from a smaller number of total possible points. If you know you are going to be missing class please talk to me about it as early in the term as possible. Also, please plan to remind me of your upcoming absence the week prior to the event.</p>
+<p>Missing a class due to an un-verified absence will be reflected negatively in the class participation portion of your grade. Additionally, any missed in-class assignments or quizzes will be graded as a 0.</p>
+</div>
+
+<div id="footer-content">
+  <!-- placeholder for footer content; will be populated on page load on built website -->
+  <script type = "text/javascript">
+    $(document).ready(function () {
+      hljs.initHighlighting();
+    });
+    $(function() {
+      $("#footer-content").load("includes.html #footer-content");
+    });
+  </script>
+</div> 
+
+
+<style>
+  /* fix for scrollbar fix; it overly compresses space between headers and 
+     preceeding paragraphs 
+  */
+  .section h1 {
+    padding-top: 66px;
+    margin-top: -36px;
+  }
+  
+  .section h2 {
+    padding-top: 66px;
+    margin-top: -26px;
+  }
+  .section h3 {
+    padding-top: 66px;
+    margin-top: -16px;
+  }
+  .section h4 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h5 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h6 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+</style>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
