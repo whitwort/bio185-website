@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Visualizing Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://rstudioconnect.wlu.edu/bio185/">bio185</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <!-- placeholder for navbar content; will be populated on page load on built website -->
+      <script type = "text/javascript">
+        $(function() {
+          $("#navbar").load("includes.html #navbar");
+        });
+      </script>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Visualizing Data</h1>
+
+</div>
+
+
+<p>View as a <a href="c-05-visualizing-data-slides.html">slideshow</a>.</p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Today you’re going to learn how to make this:</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(diamonds, aes(depth, fill = cut)) + geom_density(alpha = 0.2) + xlim(55, 70)</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-1-1.svg" width="672" /></p>
+<p>It’s only going to take one line of code, but there are a few things we need to cover to understand it!</p>
+</div>
+<div id="tables-data.frames" class="section level1">
+<h1>Tables: data.frame’s</h1>
+<p>One of the data sets that <code>ggplot2</code> comes with is <code>diamonds</code>. Get a preview:</p>
+<pre class="r"><code>diamonds</code></pre>
+<pre><code>## # A tibble: 6 x 10
+##   carat cut       color clarity depth table price     x     y     z
+##   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 0.23  Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+## 2 0.21  Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+## 3 0.23  Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+## 4 0.290 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+## 5 0.31  Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+## 6 0.24  Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48</code></pre>
+<p>The <code>diamonds</code> variable holds a new type of data we haven’t seen before: this is a <code>data.frame</code> (well, technically it’s a <a href="https://github.com/tidyverse/tibble">tibble</a> but we’re going to ignore that distinction for now). This is the data structure in R that you’ll nearly always use to represent a real data set: it’s two dimensional, rows represent observations, and each column represents a variable.</p>
+<p>You can see how many observations a data set has with <code>nrow</code>:</p>
+<pre class="r"><code>nrow(diamonds)</code></pre>
+<pre><code>## [1] 53940</code></pre>
+<p>That’s a few!</p>
+<p>Each column on a <code>data.frame</code> is just a vector of values. To get the vector of data in a column you can use the short hand <code>$</code> syntax:</p>
+<pre class="r"><code>diamonds$cut</code></pre>
+<pre><code>## [1] Ideal     Premium   Good      Premium   Good      Very Good
+## Levels: Fair &lt; Good &lt; Very Good &lt; Premium &lt; Ideal</code></pre>
+<p>You can also use the longer form <code>[[..]]</code> syntax:</p>
+<pre class="r"><code>diamonds[[&#39;cut&#39;]]
+diamonds[[&#39;cut&#39;]] == diamonds$cut</code></pre>
+<p>Note the use of quotes with <code>[[..]]</code> but not with <code>$</code>. See what happens if you use single <code>[...]</code> on a <code>data.frame</code> column:</p>
+<pre class="r"><code>diamonds[&#39;cut&#39;]</code></pre>
+<pre><code>## # A tibble: 6 x 1
+##   cut      
+##   &lt;ord&gt;    
+## 1 Ideal    
+## 2 Premium  
+## 3 Good     
+## 4 Premium  
+## 5 Good     
+## 6 Very Good</code></pre>
+<p>What did you get? What’s the difference between double and single brackets?</p>
+<p>RStudio also has a very nice interface for inspecting a <code>data.frame</code> with the <code>View</code> function (note caps):</p>
+<pre class="r"><code>View(diamonds)</code></pre>
+</div>
+<div id="plotting" class="section level1">
+<h1>Plotting</h1>
+<p>We can make basic plots with the <code>plot</code> function. Try passing <code>plot</code> two quantitative variables:</p>
+<pre class="r"><code>plot(diamonds$carat, diamonds$price)</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-11-1.svg" width="672" /></p>
+<p>What did you get?</p>
+<p>Or a quantitative and categorical variable:</p>
+<pre class="r"><code>plot(diamonds$cut, diamonds$price)</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-12-1.svg" width="672" /></p>
+<p>What did you get there?</p>
+<p>The <code>plot</code> function is a little bit magical. It will try very, very hard to draw something no matter what you pass it. But it doesn’t always choose well (if you want to crash your session run <code>plot(diamonds)</code>) and you don’t even want to know what you have to do to customize the output and make the plots pretty (see <code>?par</code>). It’s an awesome function to try out when you’re first playing around with a new package or type of data, but you’ll quickly be ready to move onto something higher-level. That’s nearly always going to be <code>ggplot2</code>.</p>
+<p>The <code>ggplot2</code> package implements a <a href="http://vita.had.co.nz/papers/layered-grammar.pdf">semantic visualization</a> framework. The idea here is to be systematic about separating and independently describing the fundamental components of a visualization. If you’ve ever been frustrated with the inscrutable choices that Excel makes when you try to make a plot, you’ll appreciate why this is important.</p>
+<p>The first component of any plot is <strong>the data</strong>. You define the table by passing it as the first argument to the <code>ggplot2</code> function:</p>
+<pre class="r"><code>ggplot(diamonds)</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-13-1.svg" width="672" /></p>
+<p>And you get a beautiful empty box. Exciting! We’ll get there.</p>
+<p>The second component of any plot is <strong>what</strong> you are going to visualize: which variables are you using and what relationship are you interested in? You do this by passing an “aesthetic mapping” as the second value to <code>ggplot</code> with the <code>aes</code> function.</p>
+<p>Visualize the <code>price</code> variable:</p>
+<pre class="r"><code>ggplot(diamonds, aes(price))</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-14-1.svg" width="672" /></p>
+<p>Visualize the <code>cut</code> variable:</p>
+<pre class="r"><code>ggplot(diamonds, aes(cut))</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-15-1.svg" width="672" /></p>
+<p>Visualize <code>price</code> as a function of <code>carat</code> (independent, dependent):</p>
+<pre class="r"><code>ggplot(diamonds, aes(carat, price))</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-16-1.svg" width="672" /></p>
+<p>Why does this relationship make more sense than the inverse?</p>
+<p>Easy enough, but we’re still just getting a grey boxes. To actually draw something, we need to define the last component of any visualization: <strong>how</strong> the variables should be projected into an image. In <code>ggplot</code> that’s the job of the “geom_” functions and well add visualizations to a plot using the <code>+</code> operator:</p>
+<p>A scatter plot with <strong>point</strong>s:</p>
+<pre class="r"><code>ggplot(diamonds, aes(carat, price)) + geom_point()</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-17-1.svg" width="672" /></p>
+<p>A histogram:</p>
+<pre class="r"><code>ggplot(diamonds, aes(price)) + geom_histogram()</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-18-1.svg" width="672" /></p>
+<p>A density distribution:</p>
+<pre class="r"><code>ggplot(diamonds, aes(price)) + geom_density()</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-19-1.svg" width="672" /></p>
+<p>How do these two methods compare for visualizing the dispersion of values in a quantitative variable?</p>
+<p><br></p>
+</div>
+<div id="grouping-variables" class="section level1">
+<h1>Grouping variables</h1>
+<p>Believe it or not we’re really close to creating the plot at the start of the document. In it, we’re visualizing the density distribution of the <code>depth</code> variable:</p>
+<pre class="r"><code>ggplot(diamonds, aes(depth)) + geom_density()</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-20-1.svg" width="672" /></p>
+<p>But in the plot above values for <code>depth</code> are grouped by the categorical variable <code>cut</code>. Specifically, the density traces are “filled” with difference colors based on <code>cut</code>.</p>
+<p>To use fill color to group values, we add that to the aesthetic mapping, because it’s about <strong>what</strong> we’re plotting:</p>
+<pre class="r"><code>ggplot(diamonds, aes(depth, fill = cut)) + geom_density()</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-21-1.svg" width="672" /></p>
+<p>Getting close, but there’s a lot of overlap between the traces, so it would be nice to make them a little transparent. Do that with the <code>alpha</code> argument; it’s about the <strong>how</strong> the plot is drawn:</p>
+<pre class="r"><code>ggplot(diamonds, aes(depth, fill = cut)) + geom_density(alpha = 0.2)</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-22-1.svg" width="672" /></p>
+<p>Finally, to focus in on the main body of the data (binning out very large and very small values), we can set the x-axis limits with <code>xlim</code>:</p>
+<pre class="r"><code>ggplot(diamonds, aes(depth, fill = cut)) + geom_density(alpha = 0.2) + xlim(55, 70)</code></pre>
+<pre><code>## Warning: Removed 45 rows containing non-finite values (stat_density).</code></pre>
+<p><img src="c-05-visualizing-data_files/figure-html/unnamed-chunk-23-1.svg" width="672" /></p>
+<p>And there it is!</p>
+</div>
+
+<div id="footer-content">
+  <!-- placeholder for footer content; will be populated on page load on built website -->
+  <script type = "text/javascript">
+    $(document).ready(function () {
+      hljs.initHighlighting();
+    });
+    $(function() {
+      $("#footer-content").load("includes.html #footer-content");
+    });
+  </script>
+</div> 
+
+
+<style>
+  /* fix for scrollbar fix; it overly compresses space between headers and 
+     preceeding paragraphs 
+  */
+  .section h1 {
+    padding-top: 66px;
+    margin-top: -36px;
+  }
+  
+  .section h2 {
+    padding-top: 66px;
+    margin-top: -26px;
+  }
+  .section h3 {
+    padding-top: 66px;
+    margin-top: -16px;
+  }
+  .section h4 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h5 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h6 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+</style>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

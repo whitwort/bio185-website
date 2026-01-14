@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Scripts and R Markdowns and Packages, Oh My!</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://rstudioconnect.wlu.edu/bio185/">bio185</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <!-- placeholder for navbar content; will be populated on page load on built website -->
+      <script type = "text/javascript">
+        $(function() {
+          $("#navbar").load("includes.html #navbar");
+        });
+      </script>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Scripts and R Markdowns and Packages, Oh My!</h1>
+
+</div>
+
+
+<p>View as a <a href="c-04-file-types-slides.html">slideshow</a>.</p>
+<div id="interacting-with-r" class="section level1">
+<h1>Interacting with R</h1>
+<p>There are a few different ways you can interact with R to get it to run your programs. You’ve already used one: the interactive console. This short guide will walk through the other two, scrips and R Markdown documents, and explain how you can use other people’s programs with packages.</p>
+</div>
+<div id="hacking-at-the-console" class="section level1">
+<h1>Hacking at the console</h1>
+<p>As you’ve seen, the <em>ad hoc</em> approach to interacting with R is to type commands in the console and interactively see the results as you go. The command history feature in R makes this a bit safer than <em>ad hoc</em> data manipulation in other software (Excel, I’m looking at you) but today we’ll see high level tools that will offer you much more reassurance that your data analysis results are solid.</p>
+<p>Take a moment to note that when you create new variable bindings in the console, you’ll see the names and values of those variables show up on your Environment tab in R Studio. When you’re working in the console you’re working in the “global” environment.</p>
+</div>
+<div id="scripts" class="section level1">
+<h1>Scripts</h1>
+<p>You can also use script files to execute R commands. Try creating a new script file now: go to the File menu, select “New File”, and then “Script”. R script files are just plain text files that contain R expressions. You can run all of the code in a script file by calling the <code>source</code> function or clicking the “Source” button in R Studio (ctrl + shift + S).</p>
+<p>Sourcing a script file is equivalent to typing all of the commands it contains into the console. Scripts also execute in your global environment (by default). We’ll be using script files later in the course to build your Shiny web apps.</p>
+</div>
+<div id="r-markdowns-reproducible-research" class="section level1">
+<h1>R Markdowns &amp; Reproducible Research</h1>
+<p>The problem with both script files and the console is that they run code in the same, global, environment; they share their variables. Keeping your code that makes figures for a paper or presentation in script files is <em>better</em> than just doing all of your analysis <em>ad hoc</em> in the console, but it runs the risk of depending on variables that you’ve created <em>ad hoc</em> in the console.</p>
+<blockquote>
+<p>“Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do..” - Donald Knuth, 1983</p>
+</blockquote>
+<p>A few decades ago Donald Knuth’s proposal that we think of our code as documents for other people to read (which he called <a href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a>), has morphed into the development of <a href="https://www.r-bloggers.com/what-is-reproducible-research/">reproducible research</a> movement in the data sciences which use tools developed for the former to achieve the latter.</p>
+<p>The key idea here is very simple; if you want to trust your results you should: - be able to document your manipulation in plain English - Recreate your <strong>entire</strong> analysis from start to finish from scratch</p>
+<p>The latest and greatest tool to facilitate reproducible research workflows in R is <a href="http://rmarkdown.rstudio.com/">RMarkdown</a> documents. These documents combine <a href="https://en.wikipedia.org/wiki/Markdown">markdown</a> text, which is a very simple markup language with <code>r</code> code blocks. This website is actually just compiled from a <a href="https://github.com/whitwort/bio185">bunch of markdown documents</a> and all of your assignments will be done using rmarkdown docs.</p>
+<p>In additiona to allowing you to combine natural language explanations of what your code does with your actual code, R Markdown documents also have the huge advantage of running in their own, isolated, environments by default. As a data science tool, that means working in R Markdown documents will force you to <strong>be sure</strong> that your entire analysis can be re-created from scratch without any surprise dependencies on <em>ad hoc</em> code you’ve been playing around with in the console.</p>
+<p>To create a new R Markdown document, go to <code>File -&gt; New File -&gt; R Markdown</code>. Take a moment to look at the example formatting. R code is found inside of blocks surrounded by ticks (```). The keyboard shortcut to make a new R code block is ctrl + alt + i.</p>
+<p>Your plain text between blocks can contain “<a href="https://en.wikipedia.org/wiki/Markdown">markdown</a>” syntax, which is a very simple markup language that can be compiled to a web page. For a quick reference go to <code>Help -&gt; Markdown Quick Reference</code>.</p>
+<p>You can make a webpage from your R Markdown documents by hitting the “Knit button” on the tool bar above them. The HTML file that is made is entirely self-contained, so you can easily share your data analysis work with others by sending them these documents.</p>
+<p>You’ll notice of course at this point that the course assignments app is just using R Markdown documents to compile and send me your solutions!</p>
+</div>
+<div id="rstudio-projects" class="section level1">
+<h1>RStudio Projects</h1>
+<p>RStudio has a really nice feature for managing different data analysis projects, called projects. A project is really just a folder with a special file to flag it as the location of a project. You should create a new project for EVERY data analysis project you’re working on; trust me. Each project has it’s own global environment, command history, etc.</p>
+<p>To create a new project just use <code>File -&gt; New Project</code>. You should create a new bio185 project for your work in this class. Later in the class you’ll want to create a new project to hold you work on your web app.</p>
+</div>
+<div id="packages" class="section level1">
+<h1>Packages</h1>
+<p>The next thing you’re going to do in today’s class is learn how to make your first graphs in R. To do that, we’re going to use a package called <code>ggplot2</code>. Packages in R are kind of like ‘apps’ and the R community maintains a package repository called <a href="https://cran.r-project.org/">CRAN</a> which is akin to an App Store (but much better, because it’s <a href="https://en.wikipedia.org/wiki/Open_platform">free and open</a>!).</p>
+<p>I’ve already installed <code>ggplot2</code> for you, but if you were working on your own computer you could install it by running:</p>
+<pre class="r"><code># note quotes
+install.packages(&quot;ggplot2&quot;)</code></pre>
+<p>But again, you won’t have to install any of the packages needed for exercises and assignments in this course because I’ve already done that for you. Once a package is installed, you can load it into your current environment using the <code>library</code> function:</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<p>The other way to access functions in packages, which you’ve seen using the course app is with the <code>::</code> operator:</p>
+<pre class="r"><code>ggplot2::ggplot()</code></pre>
+<p>Packages come with (possibly) three things:</p>
+<ul>
+<li>New functions that you can run</li>
+<li>Documentation for each function and sometimes higher level tutorials called ‘vignettes’ and ‘demos’</li>
+<li>Data sets; usually the data needed to run examples</li>
+</ul>
+<p>Let’s open the main help page for <code>ggplot2</code>:</p>
+<pre class="r"><code>?ggplot2</code></pre>
+<p>If you click on the <code>index</code> link you’ll see all of the functions that <code>ggplot2</code> comes with. It’s a lot; as packages go this is a big one. It’s become the community favorite for making publication quality plots. The <a href="http://ggplot2.tidyverse.org/">ggplot2</a> website has tons of great examples for any type of plot you could imagine wanting to make (well, almost any).</p>
+</div>
+
+<div id="footer-content">
+  <!-- placeholder for footer content; will be populated on page load on built website -->
+  <script type = "text/javascript">
+    $(document).ready(function () {
+      hljs.initHighlighting();
+    });
+    $(function() {
+      $("#footer-content").load("includes.html #footer-content");
+    });
+  </script>
+</div> 
+
+
+<style>
+  /* fix for scrollbar fix; it overly compresses space between headers and 
+     preceeding paragraphs 
+  */
+  .section h1 {
+    padding-top: 66px;
+    margin-top: -36px;
+  }
+  
+  .section h2 {
+    padding-top: 66px;
+    margin-top: -26px;
+  }
+  .section h3 {
+    padding-top: 66px;
+    margin-top: -16px;
+  }
+  .section h4 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h5 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h6 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+</style>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
