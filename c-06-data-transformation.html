@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Loading, Exploring and Transforming Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://rstudioconnect.wlu.edu/bio185/">bio185</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <!-- placeholder for navbar content; will be populated on page load on built website -->
+      <script type = "text/javascript">
+        $(function() {
+          $("#navbar").load("includes.html #navbar");
+        });
+      </script>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Loading, Exploring and Transforming Data</h1>
+
+</div>
+
+
+<p>View as a <a href="c-06-data-transformation-slides.html">slideshow</a>.</p>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>In today’s exercise we’re going to be exploring a relatively simple data set that was compiled for an article at <a href="http://fivethirtyeight.com/">FiveThirtyEight</a> looking at employment for recent college graduates by major using the American Community Survey dataset. Being good data scientists, the folks at <a href="http://fivethirtyeight.com/">FiveThirtyEight</a> open source the data behind their work, often alongside analysis scripts.</p>
+<p>As you’ll see this data set is already pretty tidy and ready to work with. For now, we’ll just use the RStudio data Import Wizard to load the data over the web.</p>
+<p>In R Studio:</p>
+<ul>
+<li>Click “Import Data Set” on the “Environment” tab.<br />
+</li>
+<li>Choose “From CSV” (for <strong>c</strong>omma <strong>s</strong>eparated **v*alues)</li>
+<li>Use <a href="https://github.com/fivethirtyeight/data/raw/master/college-majors/recent-grads.csv">this</a> URL and hit update.</li>
+<li>Check that the file parsed correctly (you should see a table)</li>
+<li>Hit “Import”</li>
+</ul>
+<p>You always want to start a new project by giving yourself a few minutes to understand the structure of your data, particularly in a case like this where it’s not data you generated yourself. See the description of data in each column of this data set <a href="https://github.com/fivethirtyeight/data/tree/master/college-majors">here</a>.</p>
+</div>
+<div id="signal-strength-data-dispersion" class="section level1">
+<h1>Signal strength: data dispersion</h1>
+<p>When you’re doing exploratory data analysis you should always be thinking very intentionally about the relationship between the <strong>question</strong> you want to ask and <em>what</em> you’re visualizing and <em>how</em> you’re visualizing it. In virtually all cases, the first question you should ask is: what’s the magnitude of the signal? Put another way, how variable are each of the variables? You’ll treat a variable with 1% variation across samples very differently than one with 10-orders of magnitude variation. Let’s take a quick look at some simple summary statistics for each variable in this table.</p>
+<p>Like the <code>plot</code> function, R’s <code>summary</code> function is a little bit magical:</p>
+<pre class="r"><code>summary(recent_grads)</code></pre>
+<p>Take a moment to digest the output; what did we get?</p>
+<p>Let’s think about this data set:</p>
+<ul>
+<li>Is there signal? How disperse are the data for each variable?</li>
+<li>Are there missing data?</li>
+<li>Are all of our vectors of the correct type? What might we want to change?</li>
+</ul>
+<p>Before we go on, let’s fix the <code>Major_category</code> variable. To make a factor, use the <code>factor</code> function:</p>
+<pre class="r"><code>recent_grads$Major_category &lt;- factor(recent_grads$Major_category)</code></pre>
+<p>Take a moment to unpack what we just did there. See <code>?factor</code> for additional optional arguments that let you specify an ordering. We’ll talk a lot more about factors in the future.</p>
+<p>How does the <code>summary</code> change when this variable is a <code>factor</code>?</p>
+<p>Getting the median and quartile ranges for the variables in our data set is useful, but they don’t tell the whole data dispersion story.</p>
+<p>To visualize dispersion for a quantitative variable we can use a histogram or density plot. Let’s look at the distribution of median incomes.</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre class="r"><code>ggplot(recent_grads, aes(Median)) + geom_density()</code></pre>
+<p><img src="c-06-data-transformation_files/figure-html/unnamed-chunk-5-1.svg" width="672" /></p>
+<p>What does this plot tell us about median income distribution?</p>
+<p>So, we’ve got some income variability to work with! Check data dispersion for other quantitative variables in the data set.</p>
+</div>
+<div id="more-than-two-dimensions" class="section level1">
+<h1>More than two dimensions</h1>
+<p>As we’ve seen, making 2D scatter plots with <code>geom_points</code> is a great way to visualize the interaction between two quantitative variables; often you’re doing this to ask whether or not they appear to be correlated. But how can we layer in additional information from other quantitative or categorical variables?</p>
+<p>As we’ve seen, you can use color to transform a plot like this:</p>
+<pre class="r"><code>ggplot(recent_grads, aes(P25th, P75th)) + geom_point()</code></pre>
+<p><img src="c-06-data-transformation_files/figure-html/unnamed-chunk-6-1.svg" width="672" /></p>
+<p>Into one like this:</p>
+<pre class="r"><code>ggplot(recent_grads, aes(P25th, P75th, color = Major_category)) + geom_point()</code></pre>
+<p><img src="c-06-data-transformation_files/figure-html/unnamed-chunk-7-1.svg" width="672" /></p>
+<p>He we get discrete colors for each <code>Major_category</code> because it’s a categorical variable (a factor!). If we set color to be a quantitative variable, we’ll get a continuous shading scale:</p>
+<pre class="r"><code>ggplot(recent_grads, aes(P25th, P75th, color = ShareWomen)) + geom_point()</code></pre>
+<p><img src="c-06-data-transformation_files/figure-html/unnamed-chunk-8-1.svg" width="672" /></p>
+<p>We can also use point <code>size</code> to visualize additional quantitative variables:</p>
+<pre class="r"><code>ggplot(recent_grads, aes(P25th, P75th, color = Major_category, size = Total)) + geom_point()</code></pre>
+<p><img src="c-06-data-transformation_files/figure-html/unnamed-chunk-9-1.svg" width="672" /></p>
+<p>Finally, values can be mapped to <code>alpha</code> to visually “weight” points:</p>
+<pre class="r"><code>ggplot(recent_grads, aes(P25th, P75th, color = Major_category, size = Total, alpha = Sample_size)) + geom_point()</code></pre>
+<p><img src="c-06-data-transformation_files/figure-html/unnamed-chunk-10-1.svg" width="672" /></p>
+<p>Finally, you can use <code>shape</code> to change the shape of points, but I would strongly recommend avoiding this for anything other than a categorical variable with a very small number of levels. Otherwise, it’ll be ugly.</p>
+</div>
+<div id="calculating-new-values" class="section level1">
+<h1>Calculating new values</h1>
+<p>Above, we changed the data type of an existing column when we switched the <code>Major_category</code> variable from being a <code>character</code> vector to a <code>factor</code> vector. We can use exactly the same syntax to add new variables to a table: instead of assigning values into an existing column (which overwrites it), you can assign a new vector into a column with a name that doesn’t exist yet.</p>
+<p>Let’s make a new column that holds the percentage of people who are employed for each major:</p>
+<pre class="r"><code>recent_grads$percent_employed &lt;- recent_grads$Employed / recent_grads$Total</code></pre>
+<p>Take a moment to make sure you understand what we did there.</p>
+<p>Now make three more columns on your own for:</p>
+<ul>
+<li>Percentage of people with jobs that require a college degree</li>
+<li>Percentage of people with jobs that don’t</li>
+<li>Percentage of people in low wage jobs</li>
+</ul>
+<p>We can use any mathematical expression we want on the right hand side of assignment operations. For example if we want to calculate how different each major is from the mean of the employment percentage:</p>
+<pre class="r"><code>recent_grads$employment_dev &lt;- recent_grads$percent_employed - 
+                               mean(recent_grads$percent_employed)</code></pre>
+</div>
+<div id="filtering" class="section level1">
+<h1>Filtering</h1>
+<p>We’ve already seen some simple examples of how you can use indexing syntax to filter data held in variables. The old-school way of filtering rows in tables is to setup complex indexing operations. The new-school way, which your textbook author advocates, is to use <code>dplyr</code> which is a package that is part of the <code>tidyverse</code>.</p>
+<p>You can load <code>dplyr</code> either on it’s own or as part of the <code>tidyverse</code></p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<p>The <code>dplyr</code> package contains lots of useful tools for transforming data sets including <code>filter</code>.</p>
+<p>Let’s use <code>filter</code> to create a table holding data for just the Biology majors:</p>
+<pre class="r"><code>bio &lt;- filter(recent_grads, Major_category == &quot;Biology &amp; Life Science&quot;)</code></pre>
+<p>Take a look at the resulting table.</p>
+<p>Now we have a reasonable number of majors to plot on a categorical axis:</p>
+<pre class="r"><code>ggplot(bio, aes(Major, percent_employed)) + 
+  geom_bar(stat = &#39;identity&#39;) + 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))</code></pre>
+<p><img src="c-06-data-transformation_files/figure-html/unnamed-chunk-15-1.svg" width="672" /></p>
+<p>See <code>?geom_bar</code> for an explanation of the <code>stat</code> argument and <code>?theme</code> for an explaination for how I tilted the axis text there.</p>
+</div>
+<div id="re-arranging" class="section level1">
+<h1>Re-arranging</h1>
+<p>That plot was ok, but a little messy looking because the x-axis was arranged alphabetically by major rather than by the percentage employment. The problem is that our <code>Major</code> variable is still a character vector. We’ll need to turn it into an <strong>ordered factor</strong>. We can easily do this with two other <code>dplyr</code> functions called <code>arrange</code> and <code>mutate</code>.</p>
+<p>First, let’s make a new version of the biology major table that is <code>arranged</code> (sorted) by <code>percent_employed</code>:</p>
+<pre class="r"><code>bio_sorted &lt;- arrange(bio, percent_employed)</code></pre>
+<p>Take a look at this new table.</p>
+<p>Next, since we’re doing things the <code>dplyr</code> way, we’ll use <code>mutate</code> to change the <code>Major</code> column into an ordered factor (you could have used assignment to do this like we did above).</p>
+<pre class="r"><code>bio_ordered &lt;- mutate( bio_sorted, 
+                       Major = factor(Major, levels = Major, ordered = TRUE)
+                     )</code></pre>
+<p>Take a moment to dissect what we did there. See <code>bio_ordered$Major</code>.</p>
+<p>Which makes for a prettier plot:</p>
+<pre class="r"><code>ggplot(bio_ordered, aes(Major, percent_employed)) + 
+  geom_bar(stat = &#39;identity&#39;) + 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))</code></pre>
+<p><img src="c-06-data-transformation_files/figure-html/unnamed-chunk-18-1.svg" width="672" /></p>
+<p>Check out the <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">Data Wrangling Cheat Sheet</a> for lots of great visual examples of how to use functions in <code>dplyr</code>.</p>
+</div>
+<div id="the-pipe" class="section level1">
+<h1>The Pipe</h1>
+<p>If we assemble everything we just did into one code block, we’d have:</p>
+<pre class="r"><code>bio         &lt;- filter(recent_grads, Major_category == &quot;Biology &amp; Life Science&quot;)
+bio_sorted  &lt;- arrange(bio, percent_employed)
+bio_ordered &lt;- mutate( bio_sorted, 
+                       Major = factor(Major, levels = Major, ordered = TRUE)
+                     )
+ggplot(bio_ordered, aes(Major, percent_employed)) + 
+  geom_bar(stat = &#39;identity&#39;) + 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))</code></pre>
+<p>That’s a little messy and takes a bit of effort to understand, partly because we are creating a bunch of intermediate variables that we’re only using once. To clean up code blocks like this, the <code>tidyverse</code> recommends using a new kind of operator called the pipe:</p>
+<pre><code>%&gt;%</code></pre>
+<p>The pipe flows data (usually a table) from left to right. Compare this to the above:</p>
+<pre class="r"><code>recent_grads %&gt;%
+  filter(Major_category == &quot;Biology &amp; Life Science&quot;) %&gt;%
+  arrange(percent_employed) %&gt;%
+  mutate(Major = factor(Major, levels = Major, ordered = TRUE)) %&gt;%
+  ggplot(aes(Major, percent_employed)) + 
+    geom_bar(stat = &#39;identity&#39;) + 
+    theme(axis.text.x = element_text(angle = 60, hjust = 1))</code></pre>
+<p>Notice how we no longer have to pass the table in as the first argument to each function. The pipe is doing that automatically for us.</p>
+<p>For this class you’re welcome to use either style (pipped, or with intermediate variables).</p>
+</div>
+
+<div id="footer-content">
+  <!-- placeholder for footer content; will be populated on page load on built website -->
+  <script type = "text/javascript">
+    $(document).ready(function () {
+      hljs.initHighlighting();
+    });
+    $(function() {
+      $("#footer-content").load("includes.html #footer-content");
+    });
+  </script>
+</div> 
+
+
+<style>
+  /* fix for scrollbar fix; it overly compresses space between headers and 
+     preceeding paragraphs 
+  */
+  .section h1 {
+    padding-top: 66px;
+    margin-top: -36px;
+  }
+  
+  .section h2 {
+    padding-top: 66px;
+    margin-top: -26px;
+  }
+  .section h3 {
+    padding-top: 66px;
+    margin-top: -16px;
+  }
+  .section h4 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h5 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h6 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+</style>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
