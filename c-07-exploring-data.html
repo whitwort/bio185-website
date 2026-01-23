@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Exploratory Data Analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://rstudioconnect.wlu.edu/bio185/">bio185</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <!-- placeholder for navbar content; will be populated on page load on built website -->
+      <script type = "text/javascript">
+        $(function() {
+          $("#navbar").load("includes.html #navbar");
+        });
+      </script>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Exploratory Data Analysis</h1>
+
+</div>
+
+
+<p>View as a <a href="c-07-exploring-data-slides.html">slideshow</a>.</p>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>For today’s class let’s move to working with a slightly larger data set; we’ll use the <code>nycflights13</code> package that contains information about every flight that departed from New York City in 2013. We’ll also use <code>dplyr</code> and <code>ggplot2</code> today.</p>
+<pre class="r"><code>library(nycflights13)
+library(dplyr)
+library(ggplot2)</code></pre>
+<p>Loading <code>nycflights13</code> brought several tables into our current environment:</p>
+<ul>
+<li><code>airlines</code></li>
+<li><code>airports</code></li>
+<li><code>planes</code></li>
+<li><code>weather</code></li>
+<li><code>flights</code></li>
+</ul>
+<p>For today we’ll focus on the <code>flights</code> data set, which lists all domestic flights out of the New York area in 2013. Next week we’ll see how we can merge data from the other tables with <code>flights</code>. For now, you might want to have a look at the <code>airlines</code> table to see the full names that go with each of the airline codes.</p>
+</div>
+<div id="thinking-about-models" class="section level1">
+<h1>Thinking about models</h1>
+<p>Over the last couple of weeks we’ve made a number of visualizations, making quantitative-categorical and quantitative-quantitative comparisons using histograms, density distributions, box plots, bar graphs and scatter plots. Embedded in each of these plots was an implicit question/hypothesis and mental model of how the comparison being visualized relates to that question/hypothesis.</p>
+<p>A bit later on in the course we’ll explore sophisticated machine learning tools that we can use to build models based on data; for now, we’ll explore how far we can push simple data visualization as a modeling mechanism. It’s the best place to start when you’re first exploring a new data set.</p>
+</div>
+<div id="which-airlines-have-the-worst-delays-group_by-summarize-count" class="section level1">
+<h1>Which airlines have the worst delays? (group_by, summarize &amp; count)</h1>
+<p>What kind of model(s), and visualization(s), could address this question?</p>
+<p>One option would be to visualize average departure delay by airline (a continuous-categorical comparison). <code>dplyr</code> has two functions that make it easy to do that: the <code>group_by</code> and the <code>summarize</code> functions. You’ll almost always want to use the two together. This code, using pipes <code>%&gt;%</code>, groups the rows of <code>flights</code> together based on the <code>carrier</code> and then uses <code>summarise</code> and the <code>mean</code> function to calculate the average delay:</p>
+<pre class="r"><code>flights %&gt;% 
+  group_by(carrier) %&gt;% 
+  summarise(ave_delay = mean(dep_delay, na.rm = TRUE))</code></pre>
+<pre><code>## # A tibble: 16 x 2
+##    carrier ave_delay
+##    &lt;chr&gt;       &lt;dbl&gt;
+##  1 9E          16.7 
+##  2 AA           8.59
+##  3 AS           5.80
+##  4 B6          13.0 
+##  5 DL           9.26
+##  6 EV          20.0 
+##  7 F9          20.2 
+##  8 FL          18.7 
+##  9 HA           4.90
+## 10 MQ          10.6 
+## 11 OO          12.6 
+## 12 UA          12.1 
+## 13 US           3.78
+## 14 VX          12.9 
+## 15 WN          17.7 
+## 16 YV          19.0</code></pre>
+<p>Let’s unpack that! Use <code>?mean</code>, <code>?summarise</code>, and <code>?group_by</code> to see the help pages for each.</p>
+<p>Now, take a moment to test and see what happens if you leave out the <code>na.rm = TRUE</code> call. Why?</p>
+<p>We can visualize our summary by piping the table into <code>ggplot</code>:</p>
+<pre class="r"><code>flights %&gt;% 
+  group_by(carrier) %&gt;% 
+  summarise(ave_delay = mean(dep_delay, na.rm = TRUE)) %&gt;%
+  ggplot(aes(carrier, ave_delay)) + geom_bar(stat = &#39;identity&#39;)</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-3-1.svg" width="672" /></p>
+<p>For anyone feeling stressed out about the pipe <code>%&gt;%</code> this code does exactly the same thing, but saves intermediate values in variables:</p>
+<pre class="r"><code>flights_by_carrier &lt;- group_by(flights, carrier)
+carrier_ave_delay  &lt;- summarize(flights_by_carrier, 
+                                ave_delay = mean(dep_delay, na.rm = TRUE)
+                               )
+ggplot(carrier_ave_delay, aes(carrier, ave_delay)) +
+  geom_bar(stat = &#39;identity&#39;)</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-4-1.svg" width="672" /></p>
+<p>For most of my example code I’ll by using the pipe because it’s shorter; but remember, you don’t have to!</p>
+<p>Might be nice to arrange that categorical x-axis by the <code>ave_delay</code> value, no? Let’s do that to make it easy to see which airline has the worst average delay. Remember from last class that well use <code>arrange</code> to order the table and then <code>mutate</code> to change our <code>character</code> column of carrier names into an ordered <code>factor</code>:</p>
+<pre class="r"><code>flights %&gt;% 
+  group_by(carrier) %&gt;% 
+  summarise(ave_delay = mean(dep_delay, na.rm = TRUE)) %&gt;%
+  arrange(ave_delay) %&gt;%
+  mutate(carrier = factor(carrier, levels = carrier, ordered = TRUE)) %&gt;%
+  ggplot(aes(carrier, ave_delay)) + geom_bar(stat = &#39;identity&#39;)</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-5-1.svg" width="672" /></p>
+<p>So Frontier (F9) and Express Jet (EV) aren’t looking great. But we all know that using <code>mean</code> to summarize a value can be dangerous, because it’s sensitive to outliers! We should <em>always</em> ask about the variation in the variables in our data sets, but it’s especially important to do so if we’re going to use averages to summarize them.</p>
+<p>What is the distribution of departure delays by airline? Visualized as a density distribution:</p>
+<pre class="r"><code>flights %&gt;%
+  ggplot(aes(dep_delay, fill = carrier)) + geom_density(alpha = 0.5)</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-6-1.svg" width="672" /></p>
+<p>What did we learn? We have a small number HUGE outliers! That makes using <code>mean</code> possibly very misleading.</p>
+<p>Variation in data like these that are very sparse is hard to visualize using density plots. Our two other options are <code>geom_freqpoly</code> and <code>geom_density</code>:</p>
+<pre class="r"><code>flights %&gt;%
+  ggplot(aes(dep_delay, color = carrier)) + geom_freqpoly()</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-7-1.svg" width="672" /></p>
+<pre class="r"><code>flights %&gt;%
+  ggplot(aes(dep_delay)) + geom_histogram()</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-8-1.svg" width="672" /></p>
+<p>What would happen if we used <code>median</code> to average the delay time, instead of <code>mean</code>? This code is identical to that above, but we’ll use the <code>median</code> function to do our averaging.</p>
+<pre class="r"><code>flights %&gt;% 
+  group_by(carrier) %&gt;% 
+  summarise(ave_delay = median(dep_delay, na.rm = TRUE)) %&gt;%
+  arrange(ave_delay) %&gt;%
+  mutate(carrier = factor(carrier, levels = carrier, ordered = TRUE)) %&gt;%
+  ggplot(aes(carrier, ave_delay)) + geom_bar(stat = &#39;identity&#39;)</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-9-1.svg" width="672" /></p>
+<p>That tells a bit of a different story! Fly SkyWest and you’ll get to leave six minutes early. Seemingly small, simple differences in the tools you choose when exploring data can lead to visualizations that tell very different stories.</p>
+<p>So how many flights were <strong>really</strong> delayed and how does that break down by airline? Being delayed more than an hour really sucks, so let’s use that as our cutoff:</p>
+<pre class="r"><code>flights %&gt;%
+  filter(dep_delay &gt; 120)</code></pre>
+<pre><code>## # A tibble: 9,723 x 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
+##  1  2013     1     1      848           1835       853     1001
+##  2  2013     1     1      957            733       144     1056
+##  3  2013     1     1     1114            900       134     1447
+##  4  2013     1     1     1540           1338       122     2020
+##  5  2013     1     1     1815           1325       290     2120
+##  6  2013     1     1     1842           1422       260     1958
+##  7  2013     1     1     1856           1645       131     2212
+##  8  2013     1     1     1934           1725       129     2126
+##  9  2013     1     1     1938           1703       155     2109
+## 10  2013     1     1     1942           1705       157     2124
+## # … with 9,713 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
+## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p>That’s a lot of flights! We can use the <code>dplyr</code> function named <code>count</code> to give us a summary of the number of rows of a that correspond to each group of a variable:</p>
+<pre class="r"><code>flights %&gt;%
+  filter(dep_delay &gt; 120) %&gt;%
+  count(carrier)</code></pre>
+<pre><code>## # A tibble: 16 x 2
+##    carrier     n
+##    &lt;chr&gt;   &lt;int&gt;
+##  1 9E        772
+##  2 AA        720
+##  3 AS         17
+##  4 B6       1621
+##  5 DL       1093
+##  6 EV       2443
+##  7 F9         34
+##  8 FL        151
+##  9 HA          5
+## 10 MQ        607
+## 11 OO          2
+## 12 UA       1364
+## 13 US        238
+## 14 VX        181
+## 15 WN        452
+## 16 YV         23</code></pre>
+<p>Note that <code>count</code> has created a column named <code>n</code> which contains the counts. We can ask it to sort that table for us:</p>
+<pre class="r"><code>flights %&gt;%
+  filter(dep_delay &gt; 120) %&gt;%
+  count(carrier, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 16 x 2
+##    carrier     n
+##    &lt;chr&gt;   &lt;int&gt;
+##  1 EV       2443
+##  2 B6       1621
+##  3 UA       1364
+##  4 DL       1093
+##  5 9E        772
+##  6 AA        720
+##  7 MQ        607
+##  8 WN        452
+##  9 US        238
+## 10 VX        181
+## 11 FL        151
+## 12 F9         34
+## 13 YV         23
+## 14 AS         17
+## 15 HA          5
+## 16 OO          2</code></pre>
+<p>And we can visualize it with a bar plot (note we don’t need an <code>arrange</code> because <code>count</code> has done that for us):</p>
+<pre class="r"><code>flights %&gt;%
+  filter(dep_delay &gt; 120) %&gt;%
+  count(carrier, sort = TRUE) %&gt;%
+  mutate(carrier = factor(carrier, levels = carrier, ordered = TRUE)) %&gt;%
+  ggplot(aes(carrier, n)) + geom_bar(stat = &#39;identity&#39;)</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-13-1.svg" width="672" /></p>
+<p>So now we’re starting to understand ExpressJet’s problem: they win at having a lot of <em>very</em> delayed flights.</p>
+</div>
+<div id="are-flight-delays-worse-at-different-new-york-airports-covariation-categorical-continuous" class="section level1">
+<h1>Are flight delays worse at different New York airports? (covariation: categorical-continuous)</h1>
+<p>If you’re flying out of New York you might want to know which airport has the worst delays on average. One way to visualize covariation in categorical (airport) and continuous (delay) variable is with a box plot:</p>
+<pre class="r"><code>flights %&gt;%
+  ggplot(aes(origin, dep_delay)) + geom_boxplot()</code></pre>
+<pre><code>## Warning: Removed 8255 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-14-1.svg" width="672" /></p>
+<p>Again, those extreme outliers are blowing out our dynamic range. Let’s use a little scaling to get a better picture of the average delay:</p>
+<pre class="r"><code>flights %&gt;%
+  ggplot(aes(origin, dep_delay)) + 
+  geom_boxplot() + 
+  ylim(0, 60)</code></pre>
+<pre><code>## Warning: Removed 218411 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-15-1.svg" width="672" /></p>
+<p>They look pretty similar. But how does that break down by carrier?.</p>
+<pre class="r"><code>flights %&gt;%
+  ggplot(aes(origin, dep_delay, fill = carrier)) + 
+  geom_boxplot() + 
+  ylim(0, 60)</code></pre>
+<pre><code>## Warning: Removed 218411 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-16-1.svg" width="672" /></p>
+<p>SkyWest is pretty good, but you might not want to fly with them if you’re at LaGuardia.</p>
+</div>
+<div id="does-departure-time-affect-flight-delays-covariation-continuous-continuous" class="section level1">
+<h1>Does departure time affect flight delays? (covariation: continuous-continuous)</h1>
+<p>To explore covariation in two continuous (quantitative) variables, we can use the tried and true scatter plot:</p>
+<pre class="r"><code>flights %&gt;%
+  ggplot(aes(sched_dep_time, dep_delay)) + geom_point()</code></pre>
+<pre><code>## Warning: Removed 8255 rows containing missing values (geom_point).</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-17-1.svg" width="672" /></p>
+<p>By carrier?</p>
+<pre class="r"><code>flights %&gt;%
+  ggplot(aes(sched_dep_time, dep_delay, color = carrier)) + 
+    geom_point(alpha = 0.3)</code></pre>
+<pre><code>## Warning: Removed 8255 rows containing missing values (geom_point).</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-18-1.svg" width="672" /></p>
+</div>
+<div id="how-many-flights-leave-each-new-york-airport-for-each-carrier-covariation-categorical-categorical" class="section level1">
+<h1>How many flights leave each New York airport for each carrier? (covariation: categorical-categorical)</h1>
+<p>We can compare two categorical variables by plot counts using point size with <code>geom_count</code>s:</p>
+<pre class="r"><code>flights %&gt;%
+  ggplot(aes(origin, carrier)) + geom_count()</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-19-1.svg" width="672" /></p>
+<p>Notice how I chose to put the variable with more levels on the y-axis.</p>
+<p>We can also make a heatmap using <code>geom_tile</code>. In this case, <code>geom_tile</code> doesn’t offer a way to calculate counts on it’s own, so we use the function <code>count</code> in our pipe:</p>
+<pre class="r"><code>flights %&gt;%
+  count(origin, carrier) %&gt;%
+  ggplot(aes(origin, carrier, fill = n)) + geom_tile()</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-20-1.svg" width="672" /></p>
+<div id="section" class="section level2">
+<h2></h2>
+<p>Heat maps are awesome! Let’s switch out our summary function to look at delays instead of counts:</p>
+<pre class="r"><code>flights %&gt;%
+  group_by(origin, carrier) %&gt;%
+  summarize(ave_delay = mean(dep_delay, na.rm = TRUE)) %&gt;%
+  ggplot(aes(origin, carrier, fill = ave_delay)) + 
+    geom_tile() + 
+    scale_fill_continuous(low = &quot;#31a354&quot;, high = &quot;#e5f5e0&quot;)</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-21-1.svg" width="672" /></p>
+<p>I wonder if there’s a correlation between number of flights and average delay? Let’s combine what we reviewed in this section with the previous!</p>
+<pre class="r"><code>flights %&gt;%
+  group_by(origin, carrier) %&gt;%
+  summarize(n         = n(),
+            ave_delay = mean(dep_delay, na.rm = TRUE)) %&gt;%
+  ggplot(aes(n, ave_delay, color = origin)) + geom_point()</code></pre>
+<p><img src="c-07-exploring-data_files/figure-html/unnamed-chunk-22-1.svg" width="672" /></p>
+</div>
+</div>
+<div id="make-some-models" class="section level1">
+<h1>Make some models</h1>
+<p>For the rest of class today, use these tools, what you learned in the last class, and the plots featured in the reading to make some more models.</p>
+<p>Include answers to these questions:</p>
+<ul>
+<li>Is there a relationship between origin/destination airport and delay time?</li>
+<li>How about for arrival times?</li>
+<li>Does the length of the flight affect delays on either end?</li>
+<li>Does time of day?</li>
+</ul>
+</div>
+
+<div id="footer-content">
+  <!-- placeholder for footer content; will be populated on page load on built website -->
+  <script type = "text/javascript">
+    $(document).ready(function () {
+      hljs.initHighlighting();
+    });
+    $(function() {
+      $("#footer-content").load("includes.html #footer-content");
+    });
+  </script>
+</div> 
+
+
+<style>
+  /* fix for scrollbar fix; it overly compresses space between headers and 
+     preceeding paragraphs 
+  */
+  .section h1 {
+    padding-top: 66px;
+    margin-top: -36px;
+  }
+  
+  .section h2 {
+    padding-top: 66px;
+    margin-top: -26px;
+  }
+  .section h3 {
+    padding-top: 66px;
+    margin-top: -16px;
+  }
+  .section h4 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h5 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h6 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+</style>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
