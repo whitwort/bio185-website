@@ -375,17 +375,17 @@ div.tocify {
 </ul>
 <p>I like to keep all of my source data files separate from my script and output files. If you don’t have one already make a folder named ‘data’ in your current working directory (“Files” tab -&gt; “New Folder”). You don’t have to do it this way, but you’ll need to change the file paths below.</p>
 <p>To download the file to your current directory in R Studio, open a Shell (this a full bash shell), and run:</p>
-<pre class="bash"><code>wget -O data/global-mean.txt https://data.giss.nasa.gov/gistemp/tabledata_v3/GLB.Ts+dSST.txt</code></pre>
+<pre class="bash"><code>wget -O global-mean.txt https://data.giss.nasa.gov/gistemp/tabledata_v3/GLB.Ts+dSST.txt</code></pre>
 <pre><code>## --2019-09-05 08:50:23--  https://data.giss.nasa.gov/gistemp/tabledata_v3/GLB.Ts+dSST.txt
 ## Resolving data.giss.nasa.gov (data.giss.nasa.gov)... 129.164.128.233, 2001:4d0:2310:230::233
 ## Connecting to data.giss.nasa.gov (data.giss.nasa.gov)|129.164.128.233|:443... connected.
 ## HTTP request sent, awaiting response... 200 OK
 ## Length: 16198 (16K) [text/plain]
-## Saving to: ‘data/global-mean.txt’
+## Saving to: ‘global-mean.txt’
 ## 
 ##      0K .......... .....                                      100%  596K=0.03s
 ## 
-## 2019-09-05 08:50:23 (596 KB/s) - ‘data/global-mean.txt’ saved [16198/16198]</code></pre>
+## 2019-09-05 08:50:23 (596 KB/s) - ‘global-mean.txt’ saved [16198/16198]</code></pre>
 <p>Note the capitol “-O”, which is specifying our output file.</p>
 <p>Fiddle all you like with the data import wizard; you’re not going to get this file to parse correctly!</p>
 </div>
@@ -406,7 +406,7 @@ div.tocify {
 <div id="reading-the-table" class="section level1">
 <h1>Reading the table</h1>
 <p>We can now use R’s <code>read.table</code> function to load the file into a table in R:</p>
-<pre class="r"><code>raw_temps &lt;- read.table(&quot;data/global-mean-clean.txt&quot;, 
+<pre class="r"><code>raw_temps &lt;- read.table(&quot;global-mean-clean.txt&quot;, 
                         header     = TRUE,
                         na.strings = &quot;****&quot;
                         )</code></pre>
