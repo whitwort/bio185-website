@@ -373,8 +373,8 @@ div.tocify {
 <p>Take a look at the files in the R Studio editor and clean up as necessary. You’ll notice that these are slightly less aweful than the file I pointed you to last class; <em>mea culpa</em>, I wanted to show you how bad it could get!</p>
 <p>For my code below, clean versions of these files are named <code>northern-mean-clean.csv</code> and <code>southern-mean-clean.csv</code>, respectively.</p>
 <p>These files are in comma-separated format. You could use <code>read.table</code> to load them and set the separator to a <code>&quot;,&quot;</code> or use the shortcut function named <code>read.csv</code>:</p>
-<pre class="r"><code>northern_raw &lt;- read.csv(&quot;data/northern-mean-clean.csv&quot;, na.strings = &quot;***&quot;)
-southern_raw &lt;- read.csv(&quot;data/southern-mean-clean.csv&quot;, na.strings = &quot;***&quot;)</code></pre>
+<pre class="r"><code>northern_raw &lt;- read.csv(&quot;northern-mean-clean.csv&quot;, na.strings = &quot;***&quot;)
+southern_raw &lt;- read.csv(&quot;southern-mean-clean.csv&quot;, na.strings = &quot;***&quot;)</code></pre>
 <p>As we did in the last class (1) we want to tidy up these tables, (2) clean up column names and (3) make a numeric month column. Since we want to do all of those things to both tables, let’s make a little function!</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre class="r"><code>tidyTemps &lt;- function(table) {
