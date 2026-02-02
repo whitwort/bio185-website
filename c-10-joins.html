@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Joins and Strings</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://rstudioconnect.wlu.edu/bio185/">bio185</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <!-- placeholder for navbar content; will be populated on page load on built website -->
+      <script type = "text/javascript">
+        $(function() {
+          $("#navbar").load("includes.html #navbar");
+        });
+      </script>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Joins and Strings</h1>
+
+</div>
+
+
+<p>View as a <a href="c-10-joins-slides.html">slideshow</a>.</p>
+<div id="joining-data-sets" class="section level1">
+<h1>Joining Data Sets</h1>
+<p>So far we’ve limited our analyses to variables contained within a given table. In real projects, however, you frequently need to join information contained in multiple source tables. Let’s look at the tools <code>dplyr</code> provides to make this easy. As always a picture is worth a thousand words and the <a href="https://github.com/rstudio/cheatsheets/raw/master/source/pdfs/data-transformation-cheatsheet.pdf">Data Transformation</a> cheat sheet is a great reference (see the Combine Tables section).</p>
+<p>Going back to the <a href="https://data.giss.nasa.gov/gistemp/">GISS Surface Temperature</a> data we looked at in the last class, you’ll see that individual tables are available for Norther and Southern hemisphere observations.</p>
+<p>Use what we learned last class to download these two files (Shell -&gt; wget):</p>
+<ul>
+<li>Northern: <a href="https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts.csv">https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts.csv</a></li>
+<li>Southern: <a href="https://data.giss.nasa.gov/gistemp/tabledata_v3/SH.Ts.csv">https://data.giss.nasa.gov/gistemp/tabledata_v3/SH.Ts.csv</a></li>
+</ul>
+<p>For my code below, I’ve saved them to a <code>data</code> subfolder of my current working directory and named them <code>northern-mean.csv</code> and <code>southern-mean.csv</code>, respectively.</p>
+<p>Take a look at the files in the R Studio editor and clean up as necessary. You’ll notice that these are slightly less aweful than the file I pointed you to last class; <em>mea culpa</em>, I wanted to show you how bad it could get!</p>
+<p>For my code below, clean versions of these files are named <code>northern-mean-clean.csv</code> and <code>southern-mean-clean.csv</code>, respectively.</p>
+<p>These files are in comma-separated format. You could use <code>read.table</code> to load them and set the separator to a <code>&quot;,&quot;</code> or use the shortcut function named <code>read.csv</code>:</p>
+<pre class="r"><code>northern_raw &lt;- read.csv(&quot;data/northern-mean-clean.csv&quot;, na.strings = &quot;***&quot;)
+southern_raw &lt;- read.csv(&quot;data/southern-mean-clean.csv&quot;, na.strings = &quot;***&quot;)</code></pre>
+<p>As we did in the last class (1) we want to tidy up these tables, (2) clean up column names and (3) make a numeric month column. Since we want to do all of those things to both tables, let’s make a little function!</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre class="r"><code>tidyTemps &lt;- function(table) {
+  # gather
+  tidy &lt;- gather(table[1:13], key = &quot;month&quot;, value = &quot;index&quot;, Jan:Dec)
+  
+  # lower case all variable names
+  colnames(tidy) &lt;- tolower(colnames(tidy))
+  
+  # make numeric month column
+  month_n &lt;- 1:12
+  names(month_n) &lt;- colnames(table[2:13])
+  tidy$month_n &lt;- month_n[tidy$month]
+  
+  # Functions return their last value; return the tidy table
+  tidy
+}</code></pre>
+<p>Now we can use our function to tidy and clean up each table:</p>
+<pre class="r"><code>northern &lt;- tidyTemps(northern_raw)
+southern &lt;- tidyTemps(southern_raw)</code></pre>
+<p>Let’s say we’d like to look at a correlation between temperatures in the two hemispheres. To do that we need to get all of the data into the same table. We can do that with one of the <code>join</code> functions from <code>dplyr</code>. In this case, our tables both have the same number of rows, so it really doesn’t matter which we choose. I’ll use <code>left_join</code> here.</p>
+<pre class="r"><code>temps &lt;- left_join(northern, southern, by = c(&quot;year&quot;, &quot;month_n&quot;))</code></pre>
+<p>Take a look at the result and make sure you understood what happened there. Let’s do some clean up:</p>
+<pre class="r"><code>temps$month.x &lt;- NULL
+temps$month.y &lt;- NULL
+colnames(temps)[2] &lt;- &quot;northern&quot;
+colnames(temps)[4] &lt;- &quot;southern&quot;</code></pre>
+</div>
+<div id="explore" class="section level1">
+<h1>Explore</h1>
+<p>Is this table Tidy? Well, yes and no! If we want to look at a correlation between northern and southern hemisphere temperatures, it is. Make that plot now!</p>
+<p>What if we want to look at plots of Northern and Southern temperatures as a function of time? Do the tidying that you would need to and make that plot!</p>
+<p>Then try:</p>
+<ul>
+<li>Play with <code>geom_smooth</code> to add a kernal trend line (which is this a nice approach given these data)</li>
+<li>If you’re feeling ambition try fitting a linear model to (some) of the data using <code>lm</code></li>
+<li>Make it interactive! Allow zooming on the x-axis.</li>
+</ul>
+</div>
+
+<div id="footer-content">
+  <!-- placeholder for footer content; will be populated on page load on built website -->
+  <script type = "text/javascript">
+    $(document).ready(function () {
+      hljs.initHighlighting();
+    });
+    $(function() {
+      $("#footer-content").load("includes.html #footer-content");
+    });
+  </script>
+</div> 
+
+
+<style>
+  /* fix for scrollbar fix; it overly compresses space between headers and 
+     preceeding paragraphs 
+  */
+  .section h1 {
+    padding-top: 66px;
+    margin-top: -36px;
+  }
+  
+  .section h2 {
+    padding-top: 66px;
+    margin-top: -26px;
+  }
+  .section h3 {
+    padding-top: 66px;
+    margin-top: -16px;
+  }
+  .section h4 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h5 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+  .section h6 {
+    padding-top: 66px;
+    margin-top: -66px;
+  }
+</style>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
