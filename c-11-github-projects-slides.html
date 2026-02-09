@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>Using Git and GitHub</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/reveal.js-3.3.0.1/css/reveal.css"/>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="site_libs/reveal.js-3.3.0.1/css/theme/simple.css" id="theme">
+
+
+  <!-- some tweaks to reveal css -->
+  <style type="text/css">
+    .reveal h1 { font-size: 2.0em; }
+    .reveal h2 { font-size: 1.5em;  }
+    .reveal h3 { font-size: 1.25em;	}
+    .reveal h4 { font-size: 1em;	}
+
+    .reveal .slides>section,
+    .reveal .slides>section>section {
+      padding: 0px 0px;
+    }
+
+
+
+    .reveal table {
+      border-width: 1px;
+      border-spacing: 2px;
+      border-style: dotted;
+      border-color: gray;
+      border-collapse: collapse;
+      font-size: 0.7em;
+    }
+
+    .reveal table th {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      font-weight: bold;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+    .reveal table td {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+
+  </style>
+
+    <style type="text/css">code{white-space: pre;}</style>
+
+
+<!-- Printing and PDF exports -->
+<script id="paper-css" type="application/dynamic-css">
+
+/* Default Print Stylesheet Template
+   by Rob Glazebrook of CSSnewbie.com
+   Last Updated: June 4, 2008
+
+   Feel free (nay, compelled) to edit, append, and
+   manipulate this file as you see fit. */
+
+
+@media print {
+
+	/* SECTION 1: Set default width, margin, float, and
+	   background. This prevents elements from extending
+	   beyond the edge of the printed page, and prevents
+	   unnecessary background images from printing */
+	html {
+		background: #fff;
+		width: auto;
+		height: auto;
+		overflow: visible;
+	}
+	body {
+		background: #fff;
+		font-size: 20pt;
+		width: auto;
+		height: auto;
+		border: 0;
+		margin: 0 5%;
+		padding: 0;
+		overflow: visible;
+		float: none !important;
+	}
+
+	/* SECTION 2: Remove any elements not needed in print.
+	   This would include navigation, ads, sidebars, etc. */
+	.nestedarrow,
+	.controls,
+	.fork-reveal,
+	.share-reveal,
+	.state-background,
+	.reveal .progress,
+	.reveal .backgrounds {
+		display: none !important;
+	}
+
+	/* SECTION 3: Set body font face, size, and color.
+	   Consider using a serif font for readability. */
+	body, p, td, li, div {
+		font-size: 20pt!important;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		color: #000;
+	}
+
+	/* SECTION 4: Set heading font face, sizes, and color.
+	   Differentiate your headings from your body text.
+	   Perhaps use a large sans-serif for distinction. */
+	h1,h2,h3,h4,h5,h6 {
+		color: #000!important;
+		height: auto;
+		line-height: normal;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		text-shadow: 0 0 0 #000 !important;
+		text-align: left;
+		letter-spacing: normal;
+	}
+	/* Need to reduce the size of the fonts for printing */
+	h1 { font-size: 28pt !important;  }
+	h2 { font-size: 24pt !important; }
+	h3 { font-size: 22pt !important; }
+	h4 { font-size: 22pt !important; font-variant: small-caps; }
+	h5 { font-size: 21pt !important; }
+	h6 { font-size: 20pt !important; font-style: italic; }
+
+	/* SECTION 5: Make hyperlinks more usable.
+	   Ensure links are underlined, and consider appending
+	   the URL to the end of the link for usability. */
+	a:link,
+	a:visited {
+		color: #000 !important;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	/*
+	.reveal a:link:after,
+	.reveal a:visited:after {
+		content: " (" attr(href) ") ";
+		color: #222 !important;
+		font-size: 90%;
+	}
+	*/
+
+
+	/* SECTION 6: more reveal.js specific additions by @skypanther */
+	ul, ol, div, p {
+		visibility: visible;
+		position: static;
+		width: auto;
+		height: auto;
+		display: block;
+		overflow: visible;
+		margin: 0;
+		text-align: left !important;
+	}
+	.reveal pre,
+	.reveal table {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.reveal pre code {
+		padding: 20px;
+		border: 1px solid #ddd;
+	}
+	.reveal blockquote {
+		margin: 20px 0;
+	}
+	.reveal .slides {
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 0 !important;
+		zoom: 1 !important;
+
+		overflow: visible !important;
+		display: block !important;
+
+		text-align: left !important;
+		-webkit-perspective: none;
+		   -moz-perspective: none;
+		    -ms-perspective: none;
+		        perspective: none;
+
+		-webkit-perspective-origin: 50% 50%;
+		   -moz-perspective-origin: 50% 50%;
+		    -ms-perspective-origin: 50% 50%;
+		        perspective-origin: 50% 50%;
+	}
+	.reveal .slides section {
+		visibility: visible !important;
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+		display: block !important;
+		overflow: visible !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 60px 20px !important;
+		z-index: auto !important;
+
+		opacity: 1 !important;
+
+		page-break-after: always !important;
+
+		-webkit-transform-style: flat !important;
+		   -moz-transform-style: flat !important;
+		    -ms-transform-style: flat !important;
+		        transform-style: flat !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+
+		-webkit-transition: none !important;
+		   -moz-transition: none !important;
+		    -ms-transition: none !important;
+		        transition: none !important;
+	}
+	.reveal .slides section.stack {
+		padding: 0 !important;
+	}
+	.reveal section:last-of-type {
+		page-break-after: avoid !important;
+	}
+	.reveal section .fragment {
+		opacity: 1 !important;
+		visibility: visible !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+	}
+	.reveal section img {
+		display: block;
+		margin: 15px 0px;
+		background: rgba(255,255,255,1);
+		border: 1px solid #666;
+		box-shadow: none;
+	}
+
+	.reveal section small {
+		font-size: 0.8em;
+	}
+
+}  
+</script>
+
+
+<script id="pdf-css" type="application/dynamic-css">
+    
+/**
+ * This stylesheet is used to print reveal.js
+ * presentations to PDF.
+ *
+ * https://github.com/hakimel/reveal.js#pdf-export
+ */
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+
+body {
+	margin: 0 auto !important;
+	border: 0;
+	padding: 0;
+	float: none !important;
+	overflow: visible;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+/* Remove any elements not needed in print. */
+.nestedarrow,
+.reveal .controls,
+.reveal .progress,
+.reveal .playback,
+.reveal.overview,
+.fork-reveal,
+.share-reveal,
+.state-background {
+	display: none !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-shadow: 0 0 0 #000 !important;
+}
+
+.reveal pre code {
+	overflow: hidden !important;
+	font-family: Courier, 'Courier New', monospace !important;
+}
+
+ul, ol, div, p {
+	visibility: visible;
+	position: static;
+	width: auto;
+	height: auto;
+	display: block;
+	overflow: visible;
+	margin: auto;
+}
+.reveal {
+	width: auto !important;
+	height: auto !important;
+	overflow: hidden !important;
+}
+.reveal .slides {
+	position: static;
+	width: 100%;
+	height: auto;
+
+	left: auto;
+	top: auto;
+	margin: 0 !important;
+	padding: 0 !important;
+
+	overflow: visible;
+	display: block;
+
+	-webkit-perspective: none;
+	   -moz-perspective: none;
+	    -ms-perspective: none;
+	        perspective: none;
+
+	-webkit-perspective-origin: 50% 50%; /* there isn't a none/auto value but 50-50 is the default */
+	   -moz-perspective-origin: 50% 50%;
+	    -ms-perspective-origin: 50% 50%;
+	        perspective-origin: 50% 50%;
+}
+
+.reveal .slides section {
+	page-break-after: always !important;
+
+	visibility: visible !important;
+	position: relative !important;
+	display: block !important;
+	position: relative !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+	box-sizing: border-box !important;
+	min-height: 1px;
+
+	opacity: 1 !important;
+
+	-webkit-transform-style: flat !important;
+	   -moz-transform-style: flat !important;
+	    -ms-transform-style: flat !important;
+	        transform-style: flat !important;
+
+	-webkit-transform: none !important;
+	   -moz-transform: none !important;
+	    -ms-transform: none !important;
+	        transform: none !important;
+}
+
+.reveal section.stack {
+	margin: 0 !important;
+	padding: 0 !important;
+	page-break-after: avoid !important;
+	height: auto !important;
+	min-height: auto !important;
+}
+
+.reveal img {
+	box-shadow: none;
+}
+
+.reveal .roll {
+	overflow: visible;
+	line-height: 1em;
+}
+
+/* Slide backgrounds are placed inside of their slide when exporting to PDF */
+.reveal section .slide-background {
+	display: block !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: -1;
+}
+
+/* All elements should be above the slide-background */
+.reveal section>* {
+	position: relative;
+	z-index: 1;
+}
+
+/* Display slide speaker notes when 'showNotes' is enabled */
+.reveal .speaker-notes-pdf {
+	display: block;
+	width: 100%;
+	max-height: none;
+	left: auto;
+	top: auto;
+	z-index: 100;
+}
+
+/* Display slide numbers when 'slideNumber' is enabled */
+.reveal .slide-number-pdf {
+	display: block;
+	position: absolute;
+	font-size: 14px;
+}
+
+</script>
+
+
+<script>
+var style = document.createElement( 'style' );
+style.type = 'text/css';
+var style_script_id = window.location.search.match( /print-pdf/gi ) ? 'pdf-css' : 'paper-css';
+var style_script = document.getElementById(style_script_id).text;
+style.innerHTML = style_script;
+document.getElementsByTagName('head')[0].appendChild(style);
+</script>
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Using Git and GitHub</h1>
+</section>
+
+<section id="introduction" class="title-slide slide level1"><h1>Introduction</h1></section>
+<section><section id="setup" class="title-slide slide level1"><h1>Setup</h1></section><section id="step-1-pick-a-project-name" class="slide level2">
+<h2>Step 1: pick a project name</h2>
+<p>In all of the steps below replace PROJECTNAME with your actual project name (please don’t actually use all caps).</p>
+<p><br></p>
+</section><section id="step-2-create-a-github-account" class="slide level2">
+<h2>Step 2: create a GitHub account</h2>
+<p><br></p>
+</section><section id="step-3-create-a-new-repository-on-github" class="slide level2">
+<h2>Step 3: create a new repository on GitHub</h2>
+<p><strong>This step should be done by ONE PERSON per group.</strong></p>
+<p>Then:</p>
+<ol type="1">
+<li class="fragment">Click on the green New button</li>
+<li class="fragment">For “Repository name” use your PROJECTNAME</li>
+<li class="fragment">Enter a short, useful description; include information about the data that will be featured. You can update this later.</li>
+<li class="fragment">Choose “Public”</li>
+<li class="fragment">CHECK “Initialize this repository with a README”</li>
+<li class="fragment">Drop down “Add .gitignore” and choose “R” (duh)</li>
+<li class="fragment">Go to Settings, then select Collaborators and add your other group members to the github project.</li>
+</ol>
+<p><br></p>
+</section><section id="step-4-setup-a-new-rstudio-project" class="slide level2">
+<h2>Step 4: setup a new RStudio project</h2>
+<p><strong>This step should be done by EVERYONE in your group.</strong></p>
+<ol type="1">
+<li class="fragment">On your group’s repository page on GitHub, click the green “Clone or Download” button</li>
+<li class="fragment">In RStudio from the menu bar select “File” -&gt; “New Project…”</li>
+<li class="fragment">Choose “Version Control”, then “Git”, then paste in the URL you copied from GitHub.</li>
+<li class="fragment">Hit “Create”</li>
+</ol>
+<p>You should see the same set of files listed on your “Files” tab that you had in your GitHub repository.</p>
+<p><br></p>
+</section><section id="step-5-setup-git-identity" class="slide level2">
+<h2>Step 5: setup Git identity</h2>
+<p><strong>This step should be done by EVERYONE in your group.</strong></p>
+<p>In RStudio from the menu bar select “Tools” -&gt; “Shell…”</p>
+<p>In the shell enter these two commands (with your actual email and name; duh.)</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="fu">git</span> config --global user.email <span class="st">&quot;your-email@mail.wlu.edu&quot;</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="fu">git</span> config --global user.name  <span class="st">&quot;My Name&quot;</span></a></code></pre></div>
+<p><br></p>
+</section><section id="step-6-setup-.gitignore" class="slide level2">
+<h2>Step 6: setup .gitignore</h2>
+<p>From the files pane, open up your “.gitignore” file and add the following line:</p>
+<pre><code>*.Rproj*</code></pre>
+<p>The will prevent you or your groupmates from including RStudio configuration files in the code that you push to GitHub.</p>
+</section><section id="step-7-test-out-the-configuration" class="slide level2">
+<h2>Step 7: test out the configuration</h2>
+<p><strong>This step should be done by EVERYONE in your group.</strong></p>
+<p>Let’s test to make sure everything is working so far.</p>
+<ol type="1">
+<li class="fragment">Open up “README.md”</li>
+<li class="fragment">Make a change; any change. Save it.</li>
+<li class="fragment">Next to your “History”&quot; tab, you should have a “Git” tab.</li>
+<li class="fragment">There should be a blue “M” (for <strong>m</strong>odified) next to “README.md”</li>
+<li class="fragment">Click the check box to stage this change, then Commit</li>
+<li class="fragment">In the “Commit message” box enter something like “testing git setup”</li>
+<li class="fragment">Hit “Commit”. You should see a message about one file changing.</li>
+</ol>
+<p>Hopefully that all worked and nothing caught fire.</p>
+</section><section id="optional-step-8-setup-ssh-key-pairs" class="slide level2">
+<h2>(Optional) Step 8: Setup SSH key-pairs</h2>
+<ol type="1">
+<li class="fragment"><a href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/">Generate a key pair</a></li>
+<li class="fragment"><a href="https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/">Add the key to your github account</a></li>
+</ol>
+<p>All of the “Bash” commands shown in these tutorials can be entered using the Shell in RStudio (Tools menu).</p>
+</section></section>
+<section id="anatomy-of-a-shiny-app" class="title-slide slide level1"><h1>Anatomy of a Shiny App</h1></section>
+<section><section id="git-github-workflow" class="title-slide slide level1"><h1>Git &amp; GitHub Workflow</h1></section><section id="make-some-changes-stage-files" class="slide level2">
+<h2>Make some changes, stage files</h2>
+<p>Let’s make some example changes to your app files. Assign each person in your group to do one of the following:</p>
+<ol type="1">
+<li class="fragment">Add a new <code>actionButton</code> after the <code>sliderInput</code> in ui.R</li>
+<li class="fragment">Change the <code>max</code> number of bins to 100 for the <code>sliderInput</code> in ui.R</li>
+<li class="fragment">(if there are three of you) Add a new comment line starting with <code>#</code> somewhere in ui.R</li>
+</ol>
+<p>When you hit “Commit” and then select “ui.R” you’ll each see the change you made highlighted.</p>
+</section><section id="push-your-changes-to-github" class="slide level2">
+<h2>Push your changes to GitHub</h2>
+<p>Pick one person in your group to go first. Hit the “Push” button in the Commit window or on the “Git” pane.</p>
+<p>Pick the second person in your group to go; Hit “Push”.</p>
+<p>You’ll see a message like:</p>
+<pre><code>To https://github.com/WL-Biol185-ShinyProjects/sample-project.git
+ ! [rejected]        master -&gt; master (fetch first)
+error: failed to push some refs to &#39;https://github.com/WL-Biol185-ShinyProjects/sample-project.git&#39;
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., &#39;git pull ...&#39;) before pushing again.
+hint: See the &#39;Note about fast-forwards&#39; in &#39;git push --help&#39; for details.</code></pre>
+<p>Following the message’s advice, you should click “Pull” to download person #1’s files.</p>
+<p>Depending on how you each edited your files one of two things might happen:</p>
+<ol type="1">
+<li class="fragment"><p>Automerge succeeds without any help from you; this works when Git’s merging algorithm can be pretty sure it knows how to merge the files without loosing anything.</p></li>
+<li class="fragment"><p>You see a message like this:</p></li>
+</ol>
+<pre><code>From https://github.com/WL-Biol185-ShinyProjects/sample-project
+   bcba6e0..d1b8b44  master     -&gt; origin/master
+Auto-merging ui.R
+CONFLICT (content): Merge conflict in ui.R
+Automatic merge failed; fix conflicts and then commit the result.</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="op">&lt;</span><span class="er">&lt;&lt;&lt;&lt;&lt;&lt;</span><span class="st"> </span>HEAD</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">                   max =<span class="st"> </span><span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">                   value =<span class="st"> </span><span class="dv">30</span><span class="er">)</span>, <span class="kw">sliderInput</span>(<span class="st">&quot;blarg&quot;</span>),</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="op">==</span><span class="er">=====</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">                   </span>max =<span class="st"> </span><span class="dv">300</span>,</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">                   value =<span class="st"> </span><span class="dv">30</span><span class="er">)</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="op">&gt;</span><span class="er">&gt;&gt;&gt;&gt;&gt;&gt;</span><span class="st"> </span>d1b8b44153b3817104302a5d04458f25e61260bd</a></code></pre></div>
+<p>Do you believe me now that it will be important for everyone in your group to write well formatted, easy to read, code?</p>
+</section><section id="real-work-flow" class="slide level2">
+<h2>Real work-flow</h2>
+<ol type="1">
+<li class="fragment">Pull</li>
+<li class="fragment">Change stuff</li>
+<li class="fragment">Stage changed files</li>
+<li class="fragment">Commit changes</li>
+<li class="fragment">Repeat steps 3-5 for every “task”; write meaningful messages. You’ll thank yourself for be diciplined about this!</li>
+<li class="fragment">Once a set of tasks is “complete” Push commits back to GitHub.</li>
+</ol>
+</section><section id="publishing-to-the-shiny-server" class="slide level2">
+<h2>Publishing to the Shiny Server</h2>
+<p>When you’re ready to publish a live version of your app in a publically available location, you can run:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">bio185<span class="op">::</span><span class="kw">publishApp</span>(<span class="st">&quot;PROJECTNAME&quot;</span>)</a></code></pre></div>
+<p>That will fetch the current version of your code from GitHub and update the app linked from our course project’s page:</p>
+<p><a href="https://rstudioconnect.wlu.edu/bio185/projects-page.html" class="uri">https://rstudioconnect.wlu.edu/bio185/projects-page.html</a></p>
+</section></section>
+<section><section id="avoiding-conflicts-with-code-people" class="title-slide slide level1"><h1>Avoiding Conflicts (with code &amp; people)</h1></section><section id="clear-file-structure-design-ahead-of-time" class="slide level2">
+<h2>Clear file structure design (ahead of time)</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Load the packages we&#39;ll need</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># Define UI for an application that draws a histogram</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">  </a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="co"># Application title</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">  </a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">  <span class="co"># Sidebar with a slider input for number of bins </span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">  <span class="co"># Show a plot of the generated distribution</span></a></code></pre></div>
+<p>No need to write any implementation code; just start by sketching out your goals.</p>
+<p>Consider this refactoring of our <code>ui.R</code> script:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">library</span>(shiny)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># Define UI for application that draws a histogram</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw">fluidPage</span>(</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">  </a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">  <span class="co"># Application title</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">  <span class="kw">titlePanel</span>(<span class="st">&quot;Old Faithful Geyser Data&quot;</span>),</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">  </a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">  <span class="co"># Sidebar with a slider input for number of bins </span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">  <span class="kw">sidebarLayout</span>(</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">    <span class="kw">sidebarPanel</span>(</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">       <span class="kw">sliderInput</span>(<span class="st">&quot;bins&quot;</span>,</a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">                   <span class="st">&quot;Number of bins:&quot;</span>,</a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">                   <span class="dt">min =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">                   <span class="dt">max =</span> <span class="dv">300</span>,</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">                   <span class="dt">value =</span> <span class="dv">30</span>)</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17">    ),</a>
+<a class="sourceLine" id="cb8-18" data-line-number="18">    </a>
+<a class="sourceLine" id="cb8-19" data-line-number="19">    <span class="co"># Show a plot of the generated distribution</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20">       <span class="kw">mainPanel</span>(</a>
+<a class="sourceLine" id="cb8-21" data-line-number="21">       <span class="kw">plotOutput</span>(<span class="st">&quot;distPlot&quot;</span>)</a>
+<a class="sourceLine" id="cb8-22" data-line-number="22">    )</a>
+<a class="sourceLine" id="cb8-23" data-line-number="23">  )</a>
+<a class="sourceLine" id="cb8-24" data-line-number="24">)</a></code></pre></div>
+<p>Here we’ll split out the code that makes the major UI elements (sidebar and main panel) into their own script files:</p>
+<p><code>sidebar.R</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">library</span>(shiny)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">sidebar &lt;-<span class="st"> </span><span class="kw">sidebarPanel</span>(</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">             <span class="kw">sliderInput</span>(<span class="st">&quot;bins&quot;</span>,</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">                         <span class="st">&quot;Number of bins:&quot;</span>,</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">                         <span class="dt">min =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">                         <span class="dt">max =</span> <span class="dv">300</span>,</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">                         <span class="dt">value =</span> <span class="dv">30</span>)</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">           )</a></code></pre></div>
+<p><code>main-panel.R</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">library</span>(shiny)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">main_panel &lt;-<span class="st">  </span><span class="kw">mainPanel</span>(<span class="kw">plotOutput</span>(<span class="st">&quot;distPlot&quot;</span>))</a></code></pre></div>
+<p><code>ui.R</code>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">library</span>(shiny)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">source</span>(<span class="st">&quot;sidebar.R&quot;</span>)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">source</span>(<span class="st">&quot;main-panel.R&quot;</span>)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co"># Define UI for application that draws a histogram</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="kw">fluidPage</span>(</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">  </a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">  <span class="co"># Application title</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">  <span class="kw">titlePanel</span>(<span class="st">&quot;Old Faithful Geyser Data&quot;</span>),</a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">  </a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">  <span class="co"># Sidebar with a slider input for number of bins </span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12">  <span class="kw">sidebarLayout</span>(sidebar, main_panel)</a>
+<a class="sourceLine" id="cb11-13" data-line-number="13">  </a>
+<a class="sourceLine" id="cb11-14" data-line-number="14">)</a></code></pre></div>
+</section><section id="clear-goals-clear-ownership" class="slide level2">
+<h2>Clear goals; clear ownership</h2>
+<ol type="1">
+<li class="fragment">Design it: you need to know <em>exactly</em> what you’re trying to build before you can start coding</li>
+<li class="fragment">Implement it: write the code you think will work</li>
+<li class="fragment">Fix all of the bugs</li>
+<li class="fragment">(most of the time) Realize your design is flawed/incomplete/impossible and go back to step 1.</li>
+</ol>
+</section></section>
+<section><section id="project-requirements" class="title-slide slide level1"><h1>Project Requirements</h1></section><section id="data" class="slide level2">
+<h2>Data</h2>
+</section><section id="motivation" class="slide level2">
+<h2>Motivation</h2>
+</section><section id="ambition" class="slide level2">
+<h2>Ambition</h2>
+</section><section id="final-product" class="slide level2">
+<h2>Final product</h2>
+<p>It must run by 5pm on Friday of Finals week (as published on the RNA Shiny server).</p>
+<p>It’d be nice to include a link to the projects hosting page on RNA in your README.md:</p>
+<p><a href="https://rstudioconnect.wlu.edu/bio185/projects-page.html" class="uri">https://rstudioconnect.wlu.edu/bio185/projects-page.html</a></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="site_libs/reveal.js-3.3.0.1/lib/js/head.min.js"></script>
+  <script src="site_libs/reveal.js-3.3.0.1/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: true,
+        // Transition style
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+
+
+
+        // Optional reveal.js plugins
+        dependencies: [
+        ]
+      });
+    </script>
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+
+<script>
+  (function() {
+    if (window.jQuery) {
+      Reveal.addEventListener( 'slidechanged', function(event) {  
+        window.jQuery(event.previousSlide).trigger('hidden');
+        window.jQuery(event.currentSlide).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+
+  </body>
+</html>
